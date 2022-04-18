@@ -44,8 +44,12 @@
   display: flex;
 }
 
-@media screen and (min-width: 767px) {
-  .card-container {
-    flex-basis: 50%;
+.card {
+  flex-basis: 100%;
+}
+
+@media screen and (min-width: 929px) {
+  .card {
+    flex-basis: 45.5%;
   }
 }
