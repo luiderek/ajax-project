@@ -1,0 +1,9 @@
+.head-container > .fa-bars {
+  border: white 2px solid;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+}
+
+.head-container > span {
+  font-size: 125%;
+}

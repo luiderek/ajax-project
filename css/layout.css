@@ -10,6 +10,12 @@
   width: 100%;
   height: 4rem;
   background-color: blueviolet;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: max(1rem, 52vw - 500px);
+  padding-right: max(1rem, 52vw - 500px);
 }
 
 /* still yet to decide whether to go with flex or grid for this. */
