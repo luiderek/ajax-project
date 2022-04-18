@@ -7,3 +7,7 @@
 .head-container > span {
   font-size: 125%;
 }
+
+.sidebar-container input {
+  width: 100%;
+}
