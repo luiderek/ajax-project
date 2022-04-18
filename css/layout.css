@@ -18,6 +18,25 @@
   padding-right: max(1rem, 52vw - 500px);
 }
 
+.sidebar-container {
+  position: fixed;
+  width: 50%;
+  height: 100%;
+  background-color: blue;
+  margin-left: 50vw;
+}
+
+.blur {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(33 33 33 / 66%);
+}
+
+.hidden {
+  display: none;
+}
+
 /* still yet to decide whether to go with flex or grid for this. */
 
 .view-grid {
