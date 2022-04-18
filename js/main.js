@@ -1,6 +1,7 @@
 const $headbarMenu = document.querySelector('.headbar-menu-toggle');
 const $sidebarMenu = document.querySelector('.sidebar-modal');
 const $sidebarContainer = document.querySelector('.sidebar-container');
+const $cardContainer = document.querySelector('.card-container');
 
 $headbarMenu.addEventListener('click', function (event) {
   sidebarVisibilityToggle();
@@ -49,3 +50,38 @@ function getJSOMFromAPI(endpoint) {
   });
   xhr.send();
 }
+
+function cardObjectToDOM(object) {
+// <div class="card">
+//   <div class="card-image">
+//     <img src="https://cdn.myanimelist.net/images/manga/5/IMAGENUMBER.jpg" alt="">
+//   </div>
+//   <div class="card-text">
+//     <h4>Title Text</h4>
+//     <p>Description Text</p>
+//   </div>
+// </div>
+
+  const $card = document.createElement('div');
+  $card.className = 'card';
+  const $cardImage = document.createElement('div');
+  $cardImage.className = 'card-image';
+  const $cardText = document.createElement('div');
+  const $img = document.createElement('img');
+  // $img.setAttribute('src', object.imageurl);
+  $cardText.className = 'card-text';
+  const $h4 = document.createElement('h4');
+  // $h4.textContent = object.title;
+  const $p = document.createElement('p');
+  // $p.textContent = object.description;
+
+  $cardText.appendChild($h4);
+  $cardText.appendChild($p);
+  $cardImage.appendChild($img);
+  $card.appendChild($cardImage);
+  $card.appendChild($cardText);
+
+  return $card;
+}
+
+$cardContainer.appendChild(cardObjectToDOM());
