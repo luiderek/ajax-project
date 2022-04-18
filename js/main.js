@@ -27,14 +27,25 @@ $sidebarSearchbar.addEventListener('submit', function (event) {
 
 function getJSOMFromAPI(endpoint) {
   const xhr = new XMLHttpRequest();
-  // &order_by="popularity"&sort="asc"
-  // figure out the correct use of more of the parameters later
-  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?min_score=.4&q=' + endpoint);
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?min_score=.5&q=' + endpoint);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
+
   xhr.addEventListener('load', function () {
     // console.log('xhr.status:', xhr.status);
-    // console.log('xhr.response:', xhr.response);
+    if (xhr.response.data.length) {
+      // console.log('xhr.response.data:', xhr.response.data);
+      for (let i = 0; i < 2; i++) {
+        // console.log(xhr.response.data[i].title);
+        for (let j = 0; j < xhr.response.data[i].genres.length; j++) {
+          // console.log('genres: ' + xhr.response.data[i].genres[j].name);
+        }
+        // console.log(xhr.response.data[i].images.jpg.image_url);
+        // console.log(xhr.response.data[i].synopsis);
+      }
+    } else {
+      // console.log('query found nothing.');
+    }
   });
   xhr.send();
 }
