@@ -78,3 +78,15 @@ h4 {
   margin-top: 2rem;
   font-weight: bold;
 }
+
+.fa-square-check {
+  background: linear-gradient(0deg, rgb(10, 121, 10) 79%, #064663 100%);
+  border-radius: 30px;
+  height: 0.9rem;
+}
+
+.fa-square-xmark {
+  background: linear-gradient(0deg, rgb(172, 5, 5) 79%, #064663 100%);
+  border-radius: 30px;
+  height: 0.9rem;
+}
