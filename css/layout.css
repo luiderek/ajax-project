@@ -1,8 +1,6 @@
 .container {
   width: max(90vw, 100vw - 1rem);
   max-width: 1000px;
-  background-color: #021323;
-  height: 100%;
   margin-inline: auto;
 }
 
@@ -11,13 +9,13 @@
   height: 3rem;
   position: fixed;
   z-index: 3;
-  background-color: #04293a;
+  background-color: #064663;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: max(1rem, 52vw - 500px);
-  padding-right: max(1rem, 52vw - 500px);
+  padding-left: max(2rem, 52vw - 500px);
+  padding-right: max(2rem, 52vw - 500px);
 }
 
 .sidebar-container {

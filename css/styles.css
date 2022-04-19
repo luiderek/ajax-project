@@ -13,7 +13,6 @@
 }
 
 .sidebar-modal {
-  position: fixed;
   top: 3rem;
   z-index: 2;
 }
@@ -48,4 +47,9 @@
 
 body > main:nth-child(2) {
   background-color: #021323;
+  overflow: auto;
+}
+
+h4 {
+  margin: 0;
 }
