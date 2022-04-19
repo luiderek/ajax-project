@@ -44,6 +44,15 @@ $sidebarSearchbar.addEventListener('submit', function (event) {
   sidebarVisibilityToggle();
 });
 
+const $sidebarGenreToggle = document.querySelector('.sidebar-genre-toggle');
+$sidebarGenreToggle.addEventListener('click', function (event) {
+  if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
+    event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
+    event.target.parentElement.children[1].classList.toggle('fa-caret-down');
+    $sidebarGenres.classList.toggle('hidden');
+  }
+});
+
 function genreObjectToCheckbox() {
   for (const genre in data.genres) {
     const $spanContainer = document.createElement('span');
@@ -91,7 +100,6 @@ function getJSOMFromAPI(q) {
   const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8' + apiParams + '&q=' + q);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
-
   xhr.addEventListener('load', function () {
     if (xhr.response.data.length) {
       data.entries = [];

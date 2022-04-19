@@ -68,3 +68,8 @@ h4 {
 .sidebar-genres i {
   margin-right: 1rem;
 }
+
+.sidebar-genre-toggle {
+  margin-top: 2rem;
+  font-weight: bold;
+}
