@@ -15,6 +15,9 @@
 
 .sidebar-container {
   color: white;
+  width: max(360px, 60vw);
+  max-width: 600px;
+  right: 0;
 }
 
 .sidebar-modal {
