@@ -1,3 +1,6 @@
+/* global data */
+/* exported data */
+
 const $headbarMenu = document.querySelector('.headbar-menu-toggle');
 const $sidebarMenu = document.querySelector('.sidebar-modal');
 const $sidebarContainer = document.querySelector('.sidebar-container');
@@ -24,31 +27,51 @@ $sidebarSearchbar.addEventListener('submit', function (event) {
   event.preventDefault();
   getJSOMFromAPI($sidebarSearchbar.elements[0].value);
   $sidebarSearchbar.reset();
+  sidebarVisibilityToggle();
 });
 
 function getJSOMFromAPI(endpoint) {
   const xhr = new XMLHttpRequest();
-  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?min_score=.5&q=' + endpoint);
+  // 12 and 49 are nsfw genres.
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=4&sfw=true&genres_exclude=12,49&q=' + endpoint);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
 
   xhr.addEventListener('load', function () {
+    // console.log('query:', endpoint);
     // console.log('xhr.status:', xhr.status);
     if (xhr.response.data.length) {
+      data.entries = [];
       // console.log('xhr.response.data:', xhr.response.data);
-      for (let i = 0; i < 2; i++) {
-        // console.log(xhr.response.data[i].title);
-        for (let j = 0; j < xhr.response.data[i].genres.length; j++) {
-          // console.log('genres: ' + xhr.response.data[i].genres[j].name);
-        }
-        // console.log(xhr.response.data[i].images.jpg.image_url);
-        // console.log(xhr.response.data[i].synopsis);
+      for (let i = 0; i < xhr.response.data.length; i++) {
+        const viewObject = {
+          title: xhr.response.data[i].title,
+          image: xhr.response.data[i].images.jpg.image_url,
+          synopsis: xhr.response.data[i].synopsis
+        };
+        data.entries.push(viewObject);
       }
+      // console.log('data.entries:', data.entries);
+      cardContainerClearDOM();
+      renderDataObject();
     } else {
       // console.log('query found nothing.');
     }
   });
   xhr.send();
+}
+
+function renderDataObject() {
+  for (const entry of data.entries) {
+    $cardContainer.appendChild(cardObjectToDOM(entry));
+  }
+}
+
+function cardContainerClearDOM() {
+  const $cardNodeList = document.querySelectorAll('.card');
+  for (const node of $cardNodeList) {
+    node.remove();
+  }
 }
 
 function cardObjectToDOM(object) {
@@ -68,12 +91,15 @@ function cardObjectToDOM(object) {
   $cardImage.className = 'card-image';
   const $cardText = document.createElement('div');
   const $img = document.createElement('img');
-  // $img.setAttribute('src', object.imageurl);
   $cardText.className = 'card-text';
   const $h4 = document.createElement('h4');
-  // $h4.textContent = object.title;
   const $p = document.createElement('p');
-  // $p.textContent = object.description;
+
+  if (object) {
+    $img.setAttribute('src', object.image);
+    $h4.textContent = object.title;
+    $p.textContent = object.synopsis;
+  }
 
   $cardText.appendChild($h4);
   $cardText.appendChild($p);
@@ -83,5 +109,3 @@ function cardObjectToDOM(object) {
 
   return $card;
 }
-
-$cardContainer.appendChild(cardObjectToDOM());

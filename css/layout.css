@@ -2,7 +2,7 @@
   width: max(90vw, 100vw - 1rem);
   max-width: 1000px;
   background-color: antiquewhite;
-  height: calc(100vh - 4rem);
+  height: 100%;
   margin-inline: auto;
 }
 
