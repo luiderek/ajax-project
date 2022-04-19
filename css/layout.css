@@ -1,15 +1,17 @@
 .container {
   width: max(90vw, 100vw - 1rem);
   max-width: 1000px;
-  background-color: antiquewhite;
+  background-color: #021323;
   height: 100%;
   margin-inline: auto;
 }
 
 .head-container {
   width: 100%;
-  height: 4rem;
-  background-color: blueviolet;
+  height: 3rem;
+  position: fixed;
+  z-index: 3;
+  background-color: #04293a;
   color: white;
   display: flex;
   justify-content: space-between;
@@ -22,7 +24,7 @@
   position: fixed;
   width: 50%;
   height: 100%;
-  background-color: blue;
+  background-color: #064663;
   margin-left: 50vw;
   padding: 1.5rem 2.5rem;
 }

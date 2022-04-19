@@ -13,6 +13,8 @@
 }
 
 .sidebar-modal {
+  position: fixed;
+  top: 3rem;
   z-index: 2;
 }
 
@@ -22,10 +24,12 @@
   width: 100%;
   height: 100%;
   justify-content: center;
+  margin-top: 3.5rem;
 }
 
 .card {
-  background-color: blueviolet;
+  background-color: #032a3c;
+  color: white;
   padding: 1rem;
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -40,4 +44,8 @@
 .card img {
   position: relative;
   width: 100%;
+}
+
+body > main:nth-child(2) {
+  background-color: #021323;
 }

@@ -33,7 +33,7 @@ $sidebarSearchbar.addEventListener('submit', function (event) {
 function getJSOMFromAPI(endpoint) {
   const xhr = new XMLHttpRequest();
   // 12 and 49 are nsfw genres.
-  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=4&sfw=true&genres_exclude=12,49&q=' + endpoint);
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&sfw=true&genres_exclude=12,49&q=' + endpoint);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
 
