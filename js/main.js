@@ -6,6 +6,13 @@ const $sidebarMenu = document.querySelector('.sidebar-modal');
 const $sidebarContainer = document.querySelector('.sidebar-container');
 const $cardContainer = document.querySelector('.card-container');
 
+window.addEventListener('DOMContentLoaded', function (event) {
+  if (!data.genres.length) {
+    data.genres = updateGenreObjectXMLCall();
+  }
+
+});
+
 $headbarMenu.addEventListener('click', function (event) {
   sidebarVisibilityToggle();
 });
@@ -30,9 +37,27 @@ $sidebarSearchbar.addEventListener('submit', function (event) {
   sidebarVisibilityToggle();
 });
 
+function updateGenreObjectXMLCall() {
+  const xhr = new XMLHttpRequest();
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/genres/manga?filter=genres');
+  xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    // there is only 19 unique genres, bugged API spits out 4 copies of it.
+    const genredata = xhr.response.data.slice(0, 19);
+    // linter doesn't recognize property assignment
+    // eslint-disable-next-line prefer-const
+    let genreObj = {};
+    for (const genre of genredata) {
+      genreObj[genre.name] = genre.mal_id;
+    }
+    data.genres = genreObj;
+  });
+  xhr.send();
+}
+
 function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
-  // 12 and 49 are nsfw genres.
   let apiParams = '';
   if (data.genreInclude.length) {
     apiParams += '&genres_include=' + data.genreInclude.join(',');
@@ -41,7 +66,7 @@ function getJSOMFromAPI(q) {
     apiParams += '&genres_exclude=' + data.genreExclude.join(',');
   }
 
-  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&sfw=true' + apiParams + '&q=' + q);
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8' + apiParams + '&q=' + q);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
 
@@ -79,15 +104,15 @@ function cardContainerClearDOM() {
 }
 
 function cardObjectToDOM(object) {
-// <div class="card">
-//   <div class="card-image">
-//     <img src="https://cdn.myanimelist.net/images/manga/5/IMAGENUMBER.jpg" alt="">
-//   </div>
-//   <div class="card-text">
-//     <h4>Title Text</h4>
-//     <p>Description Text</p>
-//   </div>
-// </div>
+  // <div class="card">
+  //   <div class="card-image">
+  //     <img src="https://cdn.myanimelist.net/images/manga/5/IMAGENUMBER.jpg" alt="">
+  //   </div>
+  //   <div class="card-text">
+  //     <h4>Title Text</h4>
+  //     <p>Description Text</p>
+  //   </div>
+  // </div>
 
   const $card = document.createElement('div');
   $card.className = 'card';

@@ -2,6 +2,7 @@
 
 let data = {
   entries: [],
+  genres: [],
   genreInclude: [],
   genreExclude: [12, 49],
   statusFilter: []
