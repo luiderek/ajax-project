@@ -47,6 +47,7 @@ $sidebarSearchbar.addEventListener('submit', function (event) {
 function genreObjectToCheckbox() {
   for (const genre in data.genres) {
     const $spanContainer = document.createElement('span');
+    $spanContainer.setAttribute('id', 'genre-check-' + data.genres[genre]);
     const $span = document.createElement('span');
     $span.textContent = genre;
     const $checkbox = document.createElement('i');
@@ -161,12 +162,23 @@ function cardObjectToDOM(object) {
 }
 
 function cycleCheckbox(element) {
-  if (element.className.includes('xmark')) {
-    element.className = 'fa-solid fa-square';
-    // here eventually also update data objects
-  } else if (element.className.includes('check')) {
-    element.className = 'fa-solid fa-square-xmark';
-  } else if (element.className.includes('square')) {
-    element.className = 'fa-solid fa-square-check';
+  if (element.className.includes('square')) {
+    const genreID = +element.parentElement.id.split('-')[2];
+    if (element.className.includes('xmark')) {
+      // X goes to neutral, remove genre-exclusion
+      element.className = 'fa-solid fa-square';
+      data.genreExclude = data.genreExclude.filter(x => x !== genreID);
+    } else if (element.className.includes('check')) {
+      // check goes to X, remove genre-inclusion, add genre-exclusion
+      element.className = 'fa-solid fa-square-xmark';
+      data.genreInclude = data.genreInclude.filter(x => x !== genreID);
+      data.genreExclude.push(genreID);
+    } else {
+      element.className = 'fa-solid fa-square-check';
+      // square to check, add genre-inclusion
+      data.genreInclude.push(genreID);
+    }
   }
+  // console.log('data.genreInclude', data.genreInclude);
+  // console.log('data.genreExclude', data.genreExclude);
 }
