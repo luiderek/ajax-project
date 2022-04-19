@@ -38,11 +38,8 @@ function getJSOMFromAPI(endpoint) {
   xhr.responseType = 'json';
 
   xhr.addEventListener('load', function () {
-    // console.log('query:', endpoint);
-    // console.log('xhr.status:', xhr.status);
     if (xhr.response.data.length) {
       data.entries = [];
-      // console.log('xhr.response.data:', xhr.response.data);
       for (let i = 0; i < xhr.response.data.length; i++) {
         const viewObject = {
           title: xhr.response.data[i].title,
@@ -51,11 +48,10 @@ function getJSOMFromAPI(endpoint) {
         };
         data.entries.push(viewObject);
       }
-      // console.log('data.entries:', data.entries);
       cardContainerClearDOM();
       renderDataObject();
     } else {
-      // console.log('query found nothing.');
+      // query finds nothing
     }
   });
   xhr.send();
