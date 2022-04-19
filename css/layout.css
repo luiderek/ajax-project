@@ -1,0 +1,55 @@
+.container {
+  width: max(90vw, 100vw - 1rem);
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+.head-container {
+  width: 100%;
+  height: 3rem;
+  position: fixed;
+  z-index: 3;
+  background-color: #064663;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: max(2rem, 52vw - 500px);
+  padding-right: max(2rem, 52vw - 500px);
+}
+
+.sidebar-container {
+  position: fixed;
+  width: 50%;
+  height: 100%;
+  background-color: #064663;
+  margin-left: 50vw;
+  padding: 1.5rem 2.5rem;
+}
+
+.blur {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(33 33 33 / 66%);
+}
+
+.hidden {
+  display: none;
+}
+
+/* still yet to decide whether to go with flex or grid for this. */
+
+.view-grid {
+  display: flex;
+}
+
+.card {
+  flex-basis: 100%;
+}
+
+@media screen and (min-width: 929px) {
+  .card {
+    flex-basis: 45.5%;
+  }
+}
