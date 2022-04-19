@@ -6,6 +6,7 @@
 
 .head-container > span {
   font-size: 125%;
+  user-select: none;
 }
 
 .sidebar-container input {
@@ -70,6 +71,7 @@ h4 {
 }
 
 .sidebar-genre-toggle {
+  user-select: none;
   margin-top: 2rem;
   font-weight: bold;
 }

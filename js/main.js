@@ -87,6 +87,17 @@ function updateGenreObjectXMLCall() {
   xhr.send();
 }
 
+// eslint-disable-next-line no-unused-vars
+function currentDisplayedGenres() {
+  const genrelist = new Set();
+  for (const entry of data.entries) {
+    for (const genre of entry.genres) {
+      genrelist.add(genre.name);
+    }
+  }
+  return genrelist;
+}
+
 function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
   let apiParams = '';
@@ -103,16 +114,19 @@ function getJSOMFromAPI(q) {
   xhr.addEventListener('load', function () {
     if (xhr.response.data.length) {
       data.entries = [];
+      // console.log('xhr.response.data:', xhr.response.data);
       for (let i = 0; i < xhr.response.data.length; i++) {
         const viewObject = {
           title: xhr.response.data[i].title,
           image: xhr.response.data[i].images.jpg.image_url,
-          synopsis: xhr.response.data[i].synopsis
+          synopsis: xhr.response.data[i].synopsis,
+          genres: xhr.response.data[i].genres
         };
         data.entries.push(viewObject);
       }
       cardContainerClearDOM();
       renderDataObject();
+      // console.log('current genres:', currentDisplayedGenres());
     } else {
       // query finds nothing
     }
