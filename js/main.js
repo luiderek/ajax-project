@@ -30,10 +30,18 @@ $sidebarSearchbar.addEventListener('submit', function (event) {
   sidebarVisibilityToggle();
 });
 
-function getJSOMFromAPI(endpoint) {
+function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
   // 12 and 49 are nsfw genres.
-  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&sfw=true&genres_exclude=12,49&q=' + endpoint);
+  let apiParams = '';
+  if (data.genreInclude.length) {
+    apiParams += '&genres_include=' + data.genreInclude.join(',');
+  }
+  if (data.genreExclude.length) {
+    apiParams += '&genres_exclude=' + data.genreExclude.join(',');
+  }
+
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&sfw=true' + apiParams + '&q=' + q);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
 
