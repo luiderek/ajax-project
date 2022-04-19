@@ -24,6 +24,12 @@ $sidebarMenu.addEventListener('click', function (event) {
   }
 });
 
+$sidebarGenres.addEventListener('click', function (event) {
+  if (event.target.className.includes('fa-solid')) {
+    cycleCheckbox(event.target);
+  }
+});
+
 function sidebarVisibilityToggle() {
   $sidebarMenu.classList.toggle('blur');
   $sidebarContainer.classList.toggle('hidden');
@@ -152,4 +158,15 @@ function cardObjectToDOM(object) {
   $card.appendChild($cardText);
 
   return $card;
+}
+
+function cycleCheckbox(element) {
+  if (element.className.includes('xmark')) {
+    element.className = 'fa-solid fa-square';
+    // here eventually also update data objects
+  } else if (element.className.includes('check')) {
+    element.className = 'fa-solid fa-square-xmark';
+  } else if (element.className.includes('square')) {
+    element.className = 'fa-solid fa-square-check';
+  }
 }
