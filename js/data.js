@@ -8,6 +8,16 @@ let data = {
   statusFilter: []
 };
 
+const previousDataJSON = localStorage.getItem('javascript-local-storage');
+if (previousDataJSON) {
+  data = JSON.parse(previousDataJSON);
+}
+
+window.addEventListener('beforeunload', function (event) {
+  const dataJSON = JSON.stringify(data);
+  this.localStorage.setItem('javascript-local-storage', dataJSON);
+});
+
 // status enum: "publishing" "complete" "hiatus" "discontinued" "upcoming"
 // to the jikan API, demographics are just another genre
 //    42 josei, 15 kids, 41 seinen, 25 shoujo, 27 shounen
