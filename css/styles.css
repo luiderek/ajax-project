@@ -12,6 +12,10 @@
   width: 100%;
 }
 
+.sidebar-container {
+  color: white;
+}
+
 .sidebar-modal {
   top: 3rem;
   z-index: 2;
@@ -53,4 +57,14 @@ body > main:nth-child(2) {
 
 h4 {
   margin: 0;
+}
+
+.sidebar-genres span {
+  margin-top: 0.3rem;
+  display: inline-block;
+  margin-right: 0.3rem;
+}
+
+.sidebar-genres i {
+  margin-right: 1rem;
 }

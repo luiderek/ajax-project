@@ -8,14 +8,14 @@ let data = {
   statusFilter: []
 };
 
-const previousDataJSON = localStorage.getItem('javascript-local-storage');
+const previousDataJSON = localStorage.getItem('ajax-local-storage');
 if (previousDataJSON) {
   data = JSON.parse(previousDataJSON);
 }
 
 window.addEventListener('beforeunload', function (event) {
   const dataJSON = JSON.stringify(data);
-  this.localStorage.setItem('javascript-local-storage', dataJSON);
+  this.localStorage.setItem('ajax-local-storage', dataJSON);
 });
 
 // status enum: "publishing" "complete" "hiatus" "discontinued" "upcoming"

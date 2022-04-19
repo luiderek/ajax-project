@@ -5,12 +5,13 @@ const $headbarMenu = document.querySelector('.headbar-menu-toggle');
 const $sidebarMenu = document.querySelector('.sidebar-modal');
 const $sidebarContainer = document.querySelector('.sidebar-container');
 const $cardContainer = document.querySelector('.card-container');
+const $sidebarGenres = document.querySelector('.sidebar-genres');
 
 window.addEventListener('DOMContentLoaded', function (event) {
-  if (!data.genres.length) {
+  if (data.genres.length === 0) {
     data.genres = updateGenreObjectXMLCall();
   }
-
+  genreObjectToCheckbox();
 });
 
 $headbarMenu.addEventListener('click', function (event) {
@@ -37,7 +38,21 @@ $sidebarSearchbar.addEventListener('submit', function (event) {
   sidebarVisibilityToggle();
 });
 
+function genreObjectToCheckbox() {
+  for (const genre in data.genres) {
+    const $spanContainer = document.createElement('span');
+    const $span = document.createElement('span');
+    $span.textContent = genre;
+    const $checkbox = document.createElement('i');
+    $checkbox.className = 'fa-solid fa-square';
+    $spanContainer.appendChild($span);
+    $spanContainer.appendChild($checkbox);
+    $sidebarGenres.appendChild($spanContainer);
+  }
+}
+
 function updateGenreObjectXMLCall() {
+  // console.log('updateGenreObjectXMLCall() called');
   const xhr = new XMLHttpRequest();
   const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/genres/manga?filter=genres');
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
