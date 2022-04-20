@@ -127,7 +127,6 @@ function genreObjectToCheckbox(object, $parent) {
 }
 
 function updateGenreObjectXMLCall() {
-  // console.log('updateGenreObjectXMLCall() called');
   const xhr = new XMLHttpRequest();
   const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/genres/manga?filter=genres');
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
@@ -147,7 +146,6 @@ function updateGenreObjectXMLCall() {
 }
 
 function updateThemeObjectXMLCall() {
-  // console.log('updateThemeObjectXMLCall() called');
   const xhr = new XMLHttpRequest();
   const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/genres/manga?filter=themes');
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
@@ -164,7 +162,6 @@ function updateThemeObjectXMLCall() {
 }
 
 function updateDemographicObjectXMLCall() {
-  // console.log('updateDemographicObjectXMLCall() called');
   const xhr = new XMLHttpRequest();
   const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/genres/manga?filter=demographics');
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
@@ -210,7 +207,6 @@ function getJSOMFromAPI(q) {
   xhr.addEventListener('load', function () {
     if (xhr.response.data.length) {
       data.entries = [];
-      // console.log('xhr.response.data:', xhr.response.data);
       for (let i = 0; i < xhr.response.data.length; i++) {
         const viewObject = {
           title: xhr.response.data[i].title,
@@ -223,7 +219,6 @@ function getJSOMFromAPI(q) {
       }
       cardContainerClearDOM();
       renderDataObject();
-      // console.log('current genres:', currentDisplayedGenres());
     } else {
       // query finds nothing
     }
@@ -298,8 +293,6 @@ function cycleGenreCheckbox(element) {
       data.genreInclude.push(genreID);
     }
   }
-  // console.log('data.genreInclude', data.genreInclude);
-  // console.log('data.genreExclude', data.genreExclude);
 }
 
 function cycleStatusCheckbox(element) {
@@ -312,6 +305,5 @@ function cycleStatusCheckbox(element) {
       element.className = 'fa-solid fa-square-check';
       data.status.push(statusName);
     }
-    // console.log(data.status);
   }
 }
