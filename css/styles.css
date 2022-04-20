@@ -75,7 +75,8 @@ h4 {
 
 .sidebar-genre-toggle,
 .sidebar-theme-toggle,
-.sidebar-demo-toggle {
+.sidebar-demo-toggle,
+.sidebar-status-toggle {
   user-select: none;
   margin-top: 2rem;
   font-weight: bold;

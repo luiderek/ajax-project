@@ -8,6 +8,7 @@ const $cardContainer = document.querySelector('.card-container');
 const $sidebarGenres = document.querySelector('.sidebar-genres');
 const $sidebarThemes = document.querySelector('.sidebar-themes');
 const $sidebarDemos = document.querySelector('.sidebar-demos');
+const $sidebarStatus = document.querySelector('.sidebar-status');
 
 window.addEventListener('DOMContentLoaded', function (event) {
   // Ideally these three if's should only run once.
@@ -37,19 +38,25 @@ $sidebarMenu.addEventListener('click', function (event) {
 
 $sidebarGenres.addEventListener('click', function (event) {
   if (event.target.className.includes('fa-solid')) {
-    cycleCheckbox(event.target);
+    cycleGenreCheckbox(event.target);
   }
 });
 
 $sidebarThemes.addEventListener('click', function (event) {
   if (event.target.className.includes('fa-solid')) {
-    cycleCheckbox(event.target);
+    cycleGenreCheckbox(event.target);
   }
 });
 
 $sidebarDemos.addEventListener('click', function (event) {
   if (event.target.className.includes('fa-solid')) {
-    cycleCheckbox(event.target);
+    cycleGenreCheckbox(event.target);
+  }
+});
+
+$sidebarStatus.addEventListener('click', function (event) {
+  if (event.target.className.includes('fa-solid')) {
+    cycleStatusCheckbox(event.target);
   }
 });
 
@@ -91,6 +98,15 @@ $sidebarDemoToggle.addEventListener('click', function (event) {
     event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
     event.target.parentElement.children[1].classList.toggle('fa-caret-down');
     $sidebarDemos.classList.toggle('hidden');
+  }
+});
+
+const $sidebarStatusToggle = document.querySelector('.sidebar-status-toggle');
+$sidebarStatusToggle.addEventListener('click', function (event) {
+  if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
+    event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
+    event.target.parentElement.children[1].classList.toggle('fa-caret-down');
+    $sidebarStatus.classList.toggle('hidden');
   }
 });
 
@@ -195,7 +211,8 @@ function getJSOMFromAPI(q) {
           title: xhr.response.data[i].title,
           image: xhr.response.data[i].images.jpg.image_url,
           synopsis: xhr.response.data[i].synopsis,
-          genres: xhr.response.data[i].genres
+          genres: xhr.response.data[i].genres,
+          status: xhr.response.data[i].status
         };
         data.entries.push(viewObject);
       }
@@ -258,7 +275,7 @@ function cardObjectToDOM(object) {
   return $card;
 }
 
-function cycleCheckbox(element) {
+function cycleGenreCheckbox(element) {
   if (element.className.includes('square')) {
     const genreID = +element.parentElement.id.split('-')[2];
     if (element.className.includes('xmark')) {
@@ -278,4 +295,25 @@ function cycleCheckbox(element) {
   }
   // console.log('data.genreInclude', data.genreInclude);
   // console.log('data.genreExclude', data.genreExclude);
+}
+
+function cycleStatusCheckbox(element) {
+  if (element.className.includes('square')) {
+    // const statusName = element.parentElement.id.split('-')[1];
+    if (element.className.includes('xmark')) {
+      // X goes to neutral, remove genre-exclusion
+      element.className = 'fa-solid fa-square';
+      // data.genreExclude = data.genreExclude.filter(x => x !== genreID);
+    } else if (element.className.includes('check')) {
+      // check goes to X, remove genre-inclusion, add genre-exclusion
+      element.className = 'fa-solid fa-square-xmark';
+      // data.genreInclude = data.genreInclude.filter(x => x !== genreID);
+      // data.genreExclude.push(genreID);
+    } else {
+      element.className = 'fa-solid fa-square-check';
+      // square to check, add genre-inclusion
+      // data.genreInclude.push(genreID);
+    }
+    // console.log('statusName:', statusName);
+  }
 }
