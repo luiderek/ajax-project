@@ -6,10 +6,18 @@
 
 .head-container > span {
   font-size: 125%;
+  user-select: none;
 }
 
 .sidebar-container input {
   width: 100%;
+}
+
+.sidebar-container {
+  color: white;
+  width: max(360px, 60vw);
+  max-width: 600px;
+  right: 0;
 }
 
 .sidebar-modal {
@@ -53,4 +61,32 @@ body > main:nth-child(2) {
 
 h4 {
   margin: 0;
+}
+
+.sidebar-genres span {
+  margin-top: 0.3rem;
+  display: inline-block;
+  margin-right: 0.3rem;
+}
+
+.sidebar-genres i {
+  margin-right: 1rem;
+}
+
+.sidebar-genre-toggle {
+  user-select: none;
+  margin-top: 2rem;
+  font-weight: bold;
+}
+
+.fa-square-check {
+  background: linear-gradient(0deg, rgb(10, 121, 10) 79%, #064663 100%);
+  border-radius: 30px;
+  height: 0.9rem;
+}
+
+.fa-square-xmark {
+  background: linear-gradient(0deg, rgb(172, 5, 5) 79%, #064663 100%);
+  border-radius: 30px;
+  height: 0.9rem;
 }
