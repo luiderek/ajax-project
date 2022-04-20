@@ -24,6 +24,8 @@ window.addEventListener('DOMContentLoaded', function (event) {
   genreObjectToCheckbox(data.genres, $sidebarGenres);
   genreObjectToCheckbox(data.themes, $sidebarThemes);
   genreObjectToCheckbox(data.demographics, $sidebarDemos);
+  data.entries = [];
+  data.status = [];
 });
 
 $headbarMenu.addEventListener('click', function (event) {
@@ -198,8 +200,11 @@ function getJSOMFromAPI(q) {
   if (data.genreExclude.length) {
     apiParams += '&genres_exclude=' + data.genreExclude.join(',');
   }
+  if (data.status.length) {
+    apiParams += '&status=' + data.status.join(',');
+  }
 
-  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8' + apiParams + '&q=' + q);
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&min_score=4' + apiParams + '&q=' + q);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
@@ -299,21 +304,14 @@ function cycleGenreCheckbox(element) {
 
 function cycleStatusCheckbox(element) {
   if (element.className.includes('square')) {
-    // const statusName = element.parentElement.id.split('-')[1];
-    if (element.className.includes('xmark')) {
-      // X goes to neutral, remove genre-exclusion
+    const statusName = element.parentElement.id.split('-')[1];
+    if (element.className.includes('check')) {
       element.className = 'fa-solid fa-square';
-      // data.genreExclude = data.genreExclude.filter(x => x !== genreID);
-    } else if (element.className.includes('check')) {
-      // check goes to X, remove genre-inclusion, add genre-exclusion
-      element.className = 'fa-solid fa-square-xmark';
-      // data.genreInclude = data.genreInclude.filter(x => x !== genreID);
-      // data.genreExclude.push(genreID);
+      data.status = data.status.filter(x => x !== statusName);
     } else {
       element.className = 'fa-solid fa-square-check';
-      // square to check, add genre-inclusion
-      // data.genreInclude.push(genreID);
+      data.status.push(statusName);
     }
-    // console.log('statusName:', statusName);
+    // console.log(data.status);
   }
 }
