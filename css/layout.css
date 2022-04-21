@@ -36,6 +36,13 @@
   background-color: rgb(33 33 33 / 66%);
 }
 
+.dark-blur {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(20, 20, 20, 0.863);
+}
+
 .hidden {
   display: none;
 }

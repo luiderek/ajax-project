@@ -32,15 +32,22 @@ window.addEventListener('DOMContentLoaded', function (event) {
 
 $cardContainer.addEventListener('click', function (event) {
   const close = event.target.closest('.card');
+  const targetID = +close.classList[1].split('-')[1];
+  for (const entry of data.entries) {
+    if (entry.mal_id === targetID) {
+      objectToDetailViewDOM(entry);
+      break;
+    }
+  }
   if (close) {
-    $detailModal.classList.toggle('blur');
+    $detailModal.classList.toggle('dark-blur');
     $detailContainer.classList.toggle('hidden');
   }
 });
 
 $detailModal.addEventListener('click', function (event) {
-  if (event.target.className.includes('blur')) {
-    $detailModal.classList.toggle('blur');
+  if (event.target.className.includes('dark-blur')) {
+    $detailModal.classList.toggle('dark-blur');
     $detailContainer.classList.toggle('hidden');
   }
 });
@@ -313,6 +320,37 @@ function cardObjectToDOM(object) {
   $card.appendChild($cardText);
 
   return $card;
+}
+
+// eslint-disable-next-line no-unused-vars
+function objectToDetailViewDOM(object) {
+  clearDetailView();
+  // object properties:
+  // title image synopsis genres[] status authors[] score demo[] mal_id
+  const $1 = document.createElement('p');
+  $1.textContent = object.title;
+  const $2 = document.createElement('img');
+  $2.setAttribute('src', object.image);
+  const $3 = document.createElement('p');
+  $3.textContent = object.synopsis;
+  const $4 = document.createElement('p');
+  $4.textContent = object.status;
+  const $5 = document.createElement('p');
+  $5.textContent = object.score;
+  const $7 = document.createElement('p');
+  $7.textContent = object.mal_id;
+  $detailContainer.appendChild($1);
+  $detailContainer.appendChild($2);
+  $detailContainer.appendChild($3);
+  $detailContainer.appendChild($4);
+  $detailContainer.appendChild($5);
+  $detailContainer.appendChild($7);
+}
+
+function clearDetailView() {
+  while ($detailContainer.firstChild) {
+    $detailContainer.removeChild($detailContainer.firstChild);
+  }
 }
 
 function cycleGenreCheckbox(element) {
