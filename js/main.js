@@ -6,12 +6,26 @@ const $sidebarMenu = document.querySelector('.sidebar-modal');
 const $sidebarContainer = document.querySelector('.sidebar-container');
 const $cardContainer = document.querySelector('.card-container');
 const $sidebarGenres = document.querySelector('.sidebar-genres');
+const $sidebarThemes = document.querySelector('.sidebar-themes');
+const $sidebarDemos = document.querySelector('.sidebar-demos');
+const $sidebarStatus = document.querySelector('.sidebar-status');
 
 window.addEventListener('DOMContentLoaded', function (event) {
+  // Ideally these three if's should only run once.
   if (data.genres.length === 0) {
     data.genres = updateGenreObjectXMLCall();
   }
-  genreObjectToCheckbox();
+  if (data.themes.length === 0) {
+    data.themes = updateThemeObjectXMLCall();
+  }
+  if (data.demographics.length === 0) {
+    data.demographics = updateDemographicObjectXMLCall();
+  }
+  genreObjectToCheckbox(data.genres, $sidebarGenres);
+  genreObjectToCheckbox(data.themes, $sidebarThemes);
+  genreObjectToCheckbox(data.demographics, $sidebarDemos);
+  data.entries = [];
+  data.status = [];
 });
 
 $headbarMenu.addEventListener('click', function (event) {
@@ -26,7 +40,25 @@ $sidebarMenu.addEventListener('click', function (event) {
 
 $sidebarGenres.addEventListener('click', function (event) {
   if (event.target.className.includes('fa-solid')) {
-    cycleCheckbox(event.target);
+    cycleGenreCheckbox(event.target);
+  }
+});
+
+$sidebarThemes.addEventListener('click', function (event) {
+  if (event.target.className.includes('fa-solid')) {
+    cycleGenreCheckbox(event.target);
+  }
+});
+
+$sidebarDemos.addEventListener('click', function (event) {
+  if (event.target.className.includes('fa-solid')) {
+    cycleGenreCheckbox(event.target);
+  }
+});
+
+$sidebarStatus.addEventListener('click', function (event) {
+  if (event.target.className.includes('fa-solid')) {
+    cycleStatusCheckbox(event.target);
   }
 });
 
@@ -53,22 +85,48 @@ $sidebarGenreToggle.addEventListener('click', function (event) {
   }
 });
 
-function genreObjectToCheckbox() {
-  for (const genre in data.genres) {
+const $sidebarThemeToggle = document.querySelector('.sidebar-theme-toggle');
+$sidebarThemeToggle.addEventListener('click', function (event) {
+  if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
+    event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
+    event.target.parentElement.children[1].classList.toggle('fa-caret-down');
+    $sidebarThemes.classList.toggle('hidden');
+  }
+});
+
+const $sidebarDemoToggle = document.querySelector('.sidebar-demo-toggle');
+$sidebarDemoToggle.addEventListener('click', function (event) {
+  if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
+    event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
+    event.target.parentElement.children[1].classList.toggle('fa-caret-down');
+    $sidebarDemos.classList.toggle('hidden');
+  }
+});
+
+const $sidebarStatusToggle = document.querySelector('.sidebar-status-toggle');
+$sidebarStatusToggle.addEventListener('click', function (event) {
+  if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
+    event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
+    event.target.parentElement.children[1].classList.toggle('fa-caret-down');
+    $sidebarStatus.classList.toggle('hidden');
+  }
+});
+
+function genreObjectToCheckbox(object, $parent) {
+  for (const genre in object) {
     const $spanContainer = document.createElement('span');
-    $spanContainer.setAttribute('id', 'genre-check-' + data.genres[genre]);
+    $spanContainer.setAttribute('id', 'genre-check-' + object[genre]);
     const $span = document.createElement('span');
     $span.textContent = genre;
     const $checkbox = document.createElement('i');
     $checkbox.className = 'fa-solid fa-square';
     $spanContainer.appendChild($span);
     $spanContainer.appendChild($checkbox);
-    $sidebarGenres.appendChild($spanContainer);
+    $parent.appendChild($spanContainer);
   }
 }
 
 function updateGenreObjectXMLCall() {
-  // console.log('updateGenreObjectXMLCall() called');
   const xhr = new XMLHttpRequest();
   const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/genres/manga?filter=genres');
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
@@ -83,6 +141,38 @@ function updateGenreObjectXMLCall() {
       genreObj[genre.name] = genre.mal_id;
     }
     data.genres = genreObj;
+  });
+  xhr.send();
+}
+
+function updateThemeObjectXMLCall() {
+  const xhr = new XMLHttpRequest();
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/genres/manga?filter=themes');
+  xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    const themedata = xhr.response.data;
+    const themeObj = {};
+    for (const genre of themedata) {
+      themeObj[genre.name] = genre.mal_id;
+    }
+    data.themes = themeObj;
+  });
+  xhr.send();
+}
+
+function updateDemographicObjectXMLCall() {
+  const xhr = new XMLHttpRequest();
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/genres/manga?filter=demographics');
+  xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    const demodata = xhr.response.data;
+    const demoObj = {};
+    for (const genre of demodata) {
+      demoObj[genre.name] = genre.mal_id;
+    }
+    data.demographics = demoObj;
   });
   xhr.send();
 }
@@ -107,26 +197,28 @@ function getJSOMFromAPI(q) {
   if (data.genreExclude.length) {
     apiParams += '&genres_exclude=' + data.genreExclude.join(',');
   }
+  if (data.status.length) {
+    apiParams += '&status=' + data.status.join(',');
+  }
 
-  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8' + apiParams + '&q=' + q);
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&min_score=4' + apiParams + '&q=' + q);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     if (xhr.response.data.length) {
       data.entries = [];
-      // console.log('xhr.response.data:', xhr.response.data);
       for (let i = 0; i < xhr.response.data.length; i++) {
         const viewObject = {
           title: xhr.response.data[i].title,
           image: xhr.response.data[i].images.jpg.image_url,
           synopsis: xhr.response.data[i].synopsis,
-          genres: xhr.response.data[i].genres
+          genres: xhr.response.data[i].genres,
+          status: xhr.response.data[i].status
         };
         data.entries.push(viewObject);
       }
       cardContainerClearDOM();
       renderDataObject();
-      // console.log('current genres:', currentDisplayedGenres());
     } else {
       // query finds nothing
     }
@@ -183,7 +275,7 @@ function cardObjectToDOM(object) {
   return $card;
 }
 
-function cycleCheckbox(element) {
+function cycleGenreCheckbox(element) {
   if (element.className.includes('square')) {
     const genreID = +element.parentElement.id.split('-')[2];
     if (element.className.includes('xmark')) {
@@ -201,6 +293,17 @@ function cycleCheckbox(element) {
       data.genreInclude.push(genreID);
     }
   }
-  // console.log('data.genreInclude', data.genreInclude);
-  // console.log('data.genreExclude', data.genreExclude);
+}
+
+function cycleStatusCheckbox(element) {
+  if (element.className.includes('square')) {
+    const statusName = element.parentElement.id.split('-')[1];
+    if (element.className.includes('check')) {
+      element.className = 'fa-solid fa-square';
+      data.status = data.status.filter(x => x !== statusName);
+    } else {
+      element.className = 'fa-solid fa-square-check';
+      data.status.push(statusName);
+    }
+  }
 }

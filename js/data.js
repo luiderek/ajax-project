@@ -3,6 +3,9 @@
 let data = {
   entries: [],
   genres: [],
+  themes: [],
+  status: [],
+  demographics: [],
   genreInclude: [],
   genreExclude: [12, 49],
   statusFilter: []

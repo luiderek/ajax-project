@@ -63,17 +63,20 @@ h4 {
   margin: 0;
 }
 
-.sidebar-genres span {
+.sidebar-container span {
   margin-top: 0.3rem;
   display: inline-block;
   margin-right: 0.3rem;
 }
 
-.sidebar-genres i {
+.sidebar-container i {
   margin-right: 1rem;
 }
 
-.sidebar-genre-toggle {
+.sidebar-genre-toggle,
+.sidebar-theme-toggle,
+.sidebar-demo-toggle,
+.sidebar-status-toggle {
   user-select: none;
   margin-top: 2rem;
   font-weight: bold;
