@@ -28,6 +28,13 @@ window.addEventListener('DOMContentLoaded', function (event) {
   data.status = [];
 });
 
+$cardContainer.addEventListener('click', function (event) {
+  const close = event.target.closest('.card');
+  if (close) {
+    // some sort of function for a modal blowup? maybe this can be CSS/html?
+  }
+});
+
 $headbarMenu.addEventListener('click', function (event) {
   sidebarVisibilityToggle();
 });
@@ -205,7 +212,8 @@ function getJSOMFromAPI(q) {
           image: xhr.response.data[i].images.jpg.image_url,
           synopsis: xhr.response.data[i].synopsis,
           genres: xhr.response.data[i].genres,
-          status: xhr.response.data[i].status
+          status: xhr.response.data[i].status,
+          mal_id: xhr.response.data[i].mal_id
         };
         data.entries.push(viewObject);
       }
@@ -269,7 +277,8 @@ function cardObjectToDOM(object) {
   // </div>
 
   const $card = document.createElement('div');
-  $card.className = 'card';
+  $card.classList.add('card');
+  $card.classList.add('id-' + object.mal_id);
   const $cardImage = document.createElement('div');
   $cardImage.className = 'card-image';
   const $cardText = document.createElement('div');
