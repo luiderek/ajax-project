@@ -99,12 +99,40 @@ h4 {
 
 .detail-container {
   position: fixed;
-  width: 50%;
-  height: 70%;
-  top: 10%;
-  background-color: #064663;
-  margin-left: 25vw;
+  width: 95%;
+  max-width: 650px;
+  height: fit-content;
+  top: 8%;
+  background-color: #106e99;
+
+  /* margin-left: 25vw; */
   padding: 1.5rem 2.5rem;
-  overflow: auto;
-  z-index: 2;
+  display: grid;
+  grid-template-areas:
+    "img title"
+    "tag tag"
+    "desc desc";
+  grid-template-columns: 2fr 3fr;
+  gap: 10px;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+}
+
+.detail-title {
+  grid-area: title;
+}
+
+.detail-desc {
+  grid-area: desc;
+}
+
+.detail-img {
+  grid-area: img;
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
 }

@@ -40,15 +40,13 @@ $cardContainer.addEventListener('click', function (event) {
     }
   }
   if (close) {
-    $detailModal.classList.toggle('dark-blur');
-    $detailContainer.classList.toggle('hidden');
+    detailVisibilityToggle();
   }
 });
 
 $detailModal.addEventListener('click', function (event) {
   if (event.target.className.includes('dark-blur')) {
-    $detailModal.classList.toggle('dark-blur');
-    $detailContainer.classList.toggle('hidden');
+    detailVisibilityToggle();
   }
 });
 
@@ -89,6 +87,11 @@ $sidebarStatus.addEventListener('click', function (event) {
 function sidebarVisibilityToggle() {
   $sidebarMenu.classList.toggle('blur');
   $sidebarContainer.classList.toggle('hidden');
+}
+
+function detailVisibilityToggle() {
+  $detailModal.classList.toggle('dark-blur');
+  $detailContainer.classList.toggle('hidden');
 }
 
 const $sidebarSearchbar = document.querySelector('form#search');
@@ -327,24 +330,33 @@ function objectToDetailViewDOM(object) {
   clearDetailView();
   // object properties:
   // title image synopsis genres[] status authors[] score demo[] mal_id
+
+  const $titlewrapper = document.createElement('div');
+
   const $1 = document.createElement('p');
   $1.textContent = object.title;
-  const $2 = document.createElement('img');
-  $2.setAttribute('src', object.image);
-  const $3 = document.createElement('p');
-  $3.textContent = object.synopsis;
+  $titlewrapper.appendChild($1);
+  const $img = document.createElement('img');
+  $img.setAttribute('src', object.image);
+  $img.classList.add('detail-img');
+  const $synopsis = document.createElement('p');
+  $synopsis.textContent = object.synopsis;
+  $synopsis.classList.add('detail-desc');
   const $4 = document.createElement('p');
   $4.textContent = object.status;
+  $4.classList.add('detail-title');
+  $titlewrapper.appendChild($4);
   const $5 = document.createElement('p');
   $5.textContent = object.score;
-  const $7 = document.createElement('p');
-  $7.textContent = object.mal_id;
-  $detailContainer.appendChild($1);
-  $detailContainer.appendChild($2);
-  $detailContainer.appendChild($3);
-  $detailContainer.appendChild($4);
-  $detailContainer.appendChild($5);
-  $detailContainer.appendChild($7);
+  $titlewrapper.appendChild($5);
+  $titlewrapper.className = 'detail-title';
+
+  // const $7 = document.createElement('p');
+  // $7.textContent = object.mal_id;
+  $detailContainer.appendChild($titlewrapper);
+  $detailContainer.appendChild($img);
+  $detailContainer.appendChild($synopsis);
+  // $detailContainer.appendChild($7);
 }
 
 function clearDetailView() {
