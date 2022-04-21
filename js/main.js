@@ -190,21 +190,13 @@ function currentDisplayedGenres() {
 
 function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
-  let apiParams = '';
-  if (data.genreInclude.length) {
-    apiParams += '&genres=' + data.genreInclude.join(',');
-  }
-  if (data.genreExclude.length) {
-    apiParams += '&genres_exclude=' + data.genreExclude.join(',');
-  }
-  if (data.status.length) {
-    apiParams += '&status=' + data.status.join(',');
-  }
-
-  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&min_score=4' + apiParams + '&q=' + q);
+  const apiParams = getParams(q);
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&min_score=4' + apiParams);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
+    removeNothing();
+    cardContainerClearDOM();
     if (xhr.response.data.length) {
       data.entries = [];
       for (let i = 0; i < xhr.response.data.length; i++) {
@@ -217,13 +209,32 @@ function getJSOMFromAPI(q) {
         };
         data.entries.push(viewObject);
       }
-      cardContainerClearDOM();
       renderDataObject();
     } else {
-      // query finds nothing
+      const $nothingFound = document.createElement('p');
+      $nothingFound.textContent = 'Nothing found with endpoint: ' + getParams(q);
+      $nothingFound.className = 'no-find';
+      $cardContainer.appendChild($nothingFound);
     }
   });
   xhr.send();
+}
+
+function getParams(q) {
+  let apiParams = '';
+  if (data.genreInclude.length) {
+    apiParams += '&genres=' + data.genreInclude.join(',');
+  }
+  if (data.genreExclude.length) {
+    apiParams += '&genres_exclude=' + data.genreExclude.join(',');
+  }
+  if (data.status.length) {
+    apiParams += '&status=' + data.status.join(',');
+  }
+  if (q) {
+    apiParams += '&q=' + q;
+  }
+  return apiParams;
 }
 
 function renderDataObject() {
@@ -236,6 +247,13 @@ function cardContainerClearDOM() {
   const $cardNodeList = document.querySelectorAll('.card');
   for (const node of $cardNodeList) {
     node.remove();
+  }
+}
+
+function removeNothing() {
+  const $nothing = document.querySelector('.noFind');
+  if ($nothing) {
+    $nothing.remove();
   }
 }
 
