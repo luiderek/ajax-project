@@ -9,6 +9,8 @@ const $sidebarGenres = document.querySelector('.sidebar-genres');
 const $sidebarThemes = document.querySelector('.sidebar-themes');
 const $sidebarDemos = document.querySelector('.sidebar-demos');
 const $sidebarStatus = document.querySelector('.sidebar-status');
+const $detailContainer = document.querySelector('.detail-container');
+const $detailModal = document.querySelector('.detail-modal');
 
 window.addEventListener('DOMContentLoaded', function (event) {
   // Ideally these three if's should only run once.
@@ -31,7 +33,15 @@ window.addEventListener('DOMContentLoaded', function (event) {
 $cardContainer.addEventListener('click', function (event) {
   const close = event.target.closest('.card');
   if (close) {
-    // some sort of function for a modal blowup? maybe this can be CSS/html?
+    $detailModal.classList.toggle('blur');
+    $detailContainer.classList.toggle('hidden');
+  }
+});
+
+$detailModal.addEventListener('click', function (event) {
+  if (event.target.className.includes('blur')) {
+    $detailModal.classList.toggle('blur');
+    $detailContainer.classList.toggle('hidden');
   }
 });
 
@@ -202,7 +212,6 @@ function getJSOMFromAPI(q) {
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    removeNothing();
     cardContainerClearDOM();
     if (xhr.response.data.length) {
       data.entries = [];
@@ -213,6 +222,9 @@ function getJSOMFromAPI(q) {
           synopsis: xhr.response.data[i].synopsis,
           genres: xhr.response.data[i].genres,
           status: xhr.response.data[i].status,
+          authors: xhr.response.data[i].authors,
+          score: xhr.response.data[i].score,
+          demo: xhr.response.data[i].demographics,
           mal_id: xhr.response.data[i].mal_id
         };
         data.entries.push(viewObject);
@@ -256,10 +268,11 @@ function cardContainerClearDOM() {
   for (const node of $cardNodeList) {
     node.remove();
   }
+  removeNothing();
 }
 
 function removeNothing() {
-  const $nothing = document.querySelector('.noFind');
+  const $nothing = document.querySelector('.no-find');
   if ($nothing) {
     $nothing.remove();
   }

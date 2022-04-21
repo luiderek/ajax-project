@@ -49,7 +49,6 @@
 }
 
 .card img {
-  position: relative;
   width: 100%;
 }
 
@@ -96,4 +95,16 @@ h4 {
 
 .no-find {
   color: white;
+}
+
+.detail-container {
+  position: fixed;
+  width: 50%;
+  height: 70%;
+  top: 10%;
+  background-color: #064663;
+  margin-left: 25vw;
+  padding: 1.5rem 2.5rem;
+  overflow: auto;
+  z-index: 2;
 }
