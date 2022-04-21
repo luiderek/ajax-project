@@ -192,7 +192,7 @@ function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
   let apiParams = '';
   if (data.genreInclude.length) {
-    apiParams += '&genres_include=' + data.genreInclude.join(',');
+    apiParams += '&genres=' + data.genreInclude.join(',');
   }
   if (data.genreExclude.length) {
     apiParams += '&genres_exclude=' + data.genreExclude.join(',');
