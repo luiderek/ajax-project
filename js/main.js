@@ -249,7 +249,7 @@ function getJSOMFromAPI(q) {
         const viewObject = {
           title: xhr.response.data[i].title,
           image: xhr.response.data[i].images.jpg.image_url,
-          synopsis: xhr.response.data[i].synopsis,
+          synopsis: xhr.response.data[i].synopsis.split('[')[0],
           genres: xhr.response.data[i].genres,
           status: xhr.response.data[i].status,
           authors: xhr.response.data[i].authors,
@@ -360,7 +360,7 @@ function objectToDetailViewDOM(object) {
   $img.setAttribute('src', object.image);
   $img.classList.add('detail-img');
   const $synopsis = document.createElement('p');
-  $synopsis.textContent = object.synopsis.split('[')[0];
+  $synopsis.textContent = object.synopsis;
   $synopsis.classList.add('detail-desc');
   const $status = document.createElement('p');
   $status.textContent = 'Status: ' + object.status;
