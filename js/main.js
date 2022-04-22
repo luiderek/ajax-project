@@ -29,6 +29,7 @@ window.addEventListener('DOMContentLoaded', function (event) {
   genreObjectToCheckbox(data.demographics, $sidebarDemos);
   data.entries = [];
   data.status = [];
+  $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
 });
 
 $cardContainer.addEventListener('click', function (event) {
@@ -73,12 +74,16 @@ $detailModal.addEventListener('click', function (event) {
     event.target.classList.toggle('detail-save');
     event.target.classList.toggle('detail-remove');
     event.target.textContent = 'Remove';
+    $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
   } else if (event.target.className.includes('detail-remove')) {
     const objectid = +event.target.classList[1].split('-')[1];
     data.saved = data.saved.filter(x => x.mal_id !== objectid);
     event.target.classList.toggle('detail-save');
     event.target.classList.toggle('detail-remove');
     event.target.textContent = 'Save';
+    $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
+  }
+  if (!$listContainer.classList.contains('hidden')) {
     listContainerClearDOM();
     renderList();
   }
