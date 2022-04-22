@@ -45,6 +45,20 @@ $cardContainer.addEventListener('click', function (event) {
   }
 });
 
+$listContainer.addEventListener('click', function (event) {
+  const close = event.target.closest('.my-card');
+  if (close) {
+    const targetID = +close.classList[1].split('-')[1];
+    for (const entry of data.saved) {
+      if (entry.mal_id === targetID) {
+        objectToDetailViewDOM(entry);
+        break;
+      }
+    }
+    detailVisibilityToggle();
+  }
+});
+
 $detailModal.addEventListener('click', function (event) {
   if (event.target.className.includes('dark-blur')) {
     detailVisibilityToggle();
@@ -65,6 +79,8 @@ $detailModal.addEventListener('click', function (event) {
     event.target.classList.toggle('detail-save');
     event.target.classList.toggle('detail-remove');
     event.target.textContent = 'Save';
+    listContainerClearDOM();
+    renderList();
   }
 });
 
