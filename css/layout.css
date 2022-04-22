@@ -1,7 +1,8 @@
 .container {
-  width: max(90vw, 100vw - 1rem);
-  max-width: 1000px;
+  width: 100% - 2rem;
+  max-width: 1400px;
   margin-inline: auto;
+  display: grid;
 }
 
 .head-container {
@@ -45,6 +46,9 @@
 
 /* still yet to decide whether to go with flex or grid for this. */
 
+/* swapping over. it's good practice. */
+
+/*
 .card {
   flex-basis: 100%;
 }
@@ -53,4 +57,4 @@
   .card {
     flex-basis: 45.5%;
   }
-}
+} */

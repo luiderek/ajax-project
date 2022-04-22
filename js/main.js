@@ -11,6 +11,8 @@ const $sidebarDemos = document.querySelector('.sidebar-demos');
 const $sidebarStatus = document.querySelector('.sidebar-status');
 const $detailContainer = document.querySelector('.detail-container');
 const $detailModal = document.querySelector('.detail-modal');
+const $myList = document.querySelector('.my-list');
+const $listContainer = document.querySelector('.list-container');
 
 window.addEventListener('DOMContentLoaded', function (event) {
   // Ideally these three if's should only run once.
@@ -78,6 +80,10 @@ $sidebarMenu.addEventListener('click', function (event) {
   if (event.target.className.includes('blur')) {
     sidebarVisibilityToggle();
   }
+});
+
+$myList.addEventListener('click', function (event) {
+  renderList();
 });
 
 $sidebarGenres.addEventListener('click', function (event) {
@@ -259,7 +265,7 @@ function getJSOMFromAPI(q) {
         };
         data.entries.push(viewObject);
       }
-      renderDataObject();
+      renderEntries();
     } else {
       const $nothingFound = document.createElement('p');
       $nothingFound.textContent = 'Nothing found with endpoint: ' + getParams(q);
@@ -287,9 +293,15 @@ function getParams(q) {
   return apiParams;
 }
 
-function renderDataObject() {
+function renderEntries() {
   for (const entry of data.entries) {
     $cardContainer.appendChild(cardObjectToDOM(entry));
+  }
+}
+
+function renderList() {
+  for (const entry of data.saved) {
+    $listContainer.appendChild(cardObjectToDOM(entry));
   }
 }
 
