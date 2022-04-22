@@ -179,6 +179,11 @@ h4 {
   border-radius: 7px;
 }
 
+/* demographic */
+.detail-tag > span:nth-child(1) {
+  background-color: darkgoldenrod;
+}
+
 .detail-img {
   grid-area: img;
   width: 100%;
@@ -197,7 +202,7 @@ div.detail-title > p:nth-child(2) {
 }
 
 .detail-save {
-  background-color: rgb(169, 179, 83);
+  background-color: rgb(78, 168, 71);
   border-radius: 5px;
   border-style: none;
   padding: 0.2rem 0.5rem;
@@ -235,7 +240,11 @@ div.detail-title > p:nth-child(2) {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   justify-items: right;
-  margin-right: 1.2rem;
+  margin-right: 3vw;
+}
+
+.sidebar-themes {
+  margin-bottom: 3rem;
 }
 
 .hidden {

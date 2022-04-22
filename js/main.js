@@ -277,6 +277,7 @@ function getJSOMFromAPI(q) {
           image: xhr.response.data[i].images.jpg.image_url,
           synopsis: xhr.response.data[i].synopsis.split('[')[0],
           genres: xhr.response.data[i].genres,
+          themes: xhr.response.data[i].themes,
           status: xhr.response.data[i].status,
           authors: xhr.response.data[i].authors,
           score: xhr.response.data[i].score,
@@ -432,32 +433,50 @@ function objectToDetailViewDOM(object) {
   const $title = document.createElement('p');
   $title.textContent = object.title;
   $titlewrapper.appendChild($title);
+
   const $img = document.createElement('img');
   $img.setAttribute('src', object.image);
   $img.classList.add('detail-img');
+
   const $synopsis = document.createElement('p');
   $synopsis.textContent = object.synopsis;
   $synopsis.classList.add('detail-desc');
+
   const $status = document.createElement('p');
   $status.textContent = 'Status: ' + object.status;
   $status.classList.add('detail-title');
+
   const $scoreWrap = document.createElement('p');
   const $score = document.createElement('span');
   $score.textContent = object.score;
+
   const $starI = document.createElement('i');
   $starI.className = 'fa-solid fa-star';
+
   const $authors = document.createElement('p');
   for (const author of object.authors) {
     const $auth = document.createElement('span');
     $auth.textContent = author.name;
     $authors.appendChild($auth);
   }
+
   const $genreList = document.createElement('div');
   $genreList.classList.add('detail-tag');
+
+  const $demo = document.createElement('span');
+  $demo.textContent = object.demo[0].name;
+  $genreList.appendChild($demo);
+
   for (const genre of object.genres) {
     const $genre = document.createElement('span');
     $genre.textContent = genre.name;
     $genreList.appendChild($genre);
+  }
+
+  for (const theme of object.genres) {
+    const $theme = document.createElement('span');
+    $theme.textContent = theme.name;
+    $genreList.appendChild($theme);
   }
 
   const $saveButton = document.createElement('button');
@@ -481,13 +500,10 @@ function objectToDetailViewDOM(object) {
 
   // <i class="fa-solid fa-star"></i>
 
-  // const $7 = document.createElement('p');
-  // $7.textContent = object.mal_id;
   $detailContainer.appendChild($titlewrapper);
   $detailContainer.appendChild($img);
   $detailContainer.appendChild($genreList);
   $detailContainer.appendChild($synopsis);
-  // $detailContainer.appendChild($7);
 }
 
 function clearDetailView() {
