@@ -47,6 +47,26 @@ $cardContainer.addEventListener('click', function (event) {
 $detailModal.addEventListener('click', function (event) {
   if (event.target.className.includes('dark-blur')) {
     detailVisibilityToggle();
+  } else if (event.target.className.includes('detail-save')) {
+    // console.log('save button clicked');
+    const objectid = +event.target.classList[1].split('-')[1];
+    // console.log('id:', objectid);
+    for (const object of data.entries) {
+      if (object.mal_id === objectid) {
+        data.saved = data.saved.filter(x => x.mal_id !== objectid);
+        data.saved.push(object);
+        // console.log(data.saved);
+      }
+    }
+    event.target.classList.toggle('detail-save');
+    event.target.classList.toggle('detail-remove');
+    event.target.textContent = 'Remove';
+  } else if (event.target.className.includes('detail-remove')) {
+    const objectid = +event.target.classList[1].split('-')[1];
+    data.saved = data.saved.filter(x => x.mal_id !== objectid);
+    event.target.classList.toggle('detail-save');
+    event.target.classList.toggle('detail-remove');
+    event.target.textContent = 'Save';
   }
 });
 
@@ -363,11 +383,24 @@ function objectToDetailViewDOM(object) {
     $genre.textContent = genre.name;
     $genreList.appendChild($genre);
   }
+
+  const $saveButton = document.createElement('button');
+  if (data.saved.some(x => x.mal_id === object.mal_id)) {
+    $saveButton.textContent = 'Remove';
+    $saveButton.classList.add('detail-remove');
+  } else {
+    $saveButton.textContent = 'Save';
+    $saveButton.classList.add('detail-save');
+  }
+  $saveButton.classList.add('saveid-' + object.mal_id);
+
   $scoreWrap.appendChild($score);
   $scoreWrap.appendChild($starI);
   $titlewrapper.appendChild($authors);
   $titlewrapper.appendChild($status);
   $titlewrapper.appendChild($scoreWrap);
+  $titlewrapper.appendChild($saveButton);
+
   $titlewrapper.className = 'detail-title';
 
   // <i class="fa-solid fa-star"></i>
