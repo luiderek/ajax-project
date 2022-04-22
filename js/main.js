@@ -15,7 +15,6 @@ const $myList = document.querySelector('.my-list');
 const $listContainer = document.querySelector('.list-container');
 
 window.addEventListener('DOMContentLoaded', function (event) {
-  // Ideally these three if's should only run once.
   if (data.genres.length === 0) {
     data.genres = updateGenreObjectXMLCall();
   }
@@ -50,14 +49,11 @@ $detailModal.addEventListener('click', function (event) {
   if (event.target.className.includes('dark-blur')) {
     detailVisibilityToggle();
   } else if (event.target.className.includes('detail-save')) {
-    // console.log('save button clicked');
     const objectid = +event.target.classList[1].split('-')[1];
-    // console.log('id:', objectid);
     for (const object of data.entries) {
       if (object.mal_id === objectid) {
         data.saved = data.saved.filter(x => x.mal_id !== objectid);
         data.saved.push(object);
-        // console.log(data.saved);
       }
     }
     event.target.classList.toggle('detail-save');
@@ -83,7 +79,13 @@ $sidebarMenu.addEventListener('click', function (event) {
 });
 
 $myList.addEventListener('click', function (event) {
-  renderList();
+  if ($listContainer.classList.contains('hidden')) {
+    swapCardListViews();
+    listContainerClearDOM();
+    renderList();
+  } else {
+    sidebarVisibilityToggle();
+  }
 });
 
 $sidebarGenres.addEventListener('click', function (event) {
@@ -118,6 +120,11 @@ function sidebarVisibilityToggle() {
 function detailVisibilityToggle() {
   $detailModal.classList.toggle('dark-blur');
   $detailContainer.classList.toggle('hidden');
+}
+
+function swapCardListViews() {
+  $cardContainer.classList.toggle('hidden');
+  $listContainer.classList.toggle('hidden');
 }
 
 const $sidebarSearchbar = document.querySelector('form#search');
@@ -230,17 +237,6 @@ function updateDemographicObjectXMLCall() {
   xhr.send();
 }
 
-// eslint-disable-next-line no-unused-vars
-function currentDisplayedGenres() {
-  const genrelist = new Set();
-  for (const entry of data.entries) {
-    for (const genre of entry.genres) {
-      genrelist.add(genre.name);
-    }
-  }
-  return genrelist;
-}
-
 function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
   const apiParams = getParams(q);
@@ -249,6 +245,9 @@ function getJSOMFromAPI(q) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     cardContainerClearDOM();
+    if ($cardContainer.classList.contains('hidden')) {
+      swapCardListViews();
+    }
     if (xhr.response.data.length) {
       data.entries = [];
       for (let i = 0; i < xhr.response.data.length; i++) {
@@ -295,18 +294,26 @@ function getParams(q) {
 
 function renderEntries() {
   for (const entry of data.entries) {
-    $cardContainer.appendChild(cardObjectToDOM(entry));
+    $cardContainer.appendChild(objectToCardDOM(entry));
   }
 }
 
 function renderList() {
   for (const entry of data.saved) {
-    $listContainer.appendChild(cardObjectToDOM(entry));
+    $listContainer.appendChild(objectToListDOM(entry));
   }
 }
 
 function cardContainerClearDOM() {
   const $cardNodeList = document.querySelectorAll('.card');
+  for (const node of $cardNodeList) {
+    node.remove();
+  }
+  removeNothing();
+}
+
+function listContainerClearDOM() {
+  const $cardNodeList = document.querySelectorAll('.my-card');
   for (const node of $cardNodeList) {
     node.remove();
   }
@@ -320,7 +327,7 @@ function removeNothing() {
   }
 }
 
-function cardObjectToDOM(object) {
+function objectToCardDOM(object) {
   // <div class="card">
   //   <div class="card-image">
   //     <img src="https://cdn.myanimelist.net/images/manga/5/IMAGENUMBER.jpg" alt="">
@@ -333,6 +340,43 @@ function cardObjectToDOM(object) {
 
   const $card = document.createElement('div');
   $card.classList.add('card');
+  $card.classList.add('id-' + object.mal_id);
+  const $cardImage = document.createElement('div');
+  $cardImage.className = 'card-image';
+  const $cardText = document.createElement('div');
+  const $img = document.createElement('img');
+  $cardText.className = 'card-text';
+  const $h4 = document.createElement('h4');
+  const $p = document.createElement('p');
+
+  if (object) {
+    $img.setAttribute('src', object.image);
+    $h4.textContent = object.title;
+    $p.textContent = object.synopsis;
+  }
+
+  $cardText.appendChild($h4);
+  $cardText.appendChild($p);
+  $cardImage.appendChild($img);
+  $card.appendChild($cardImage);
+  $card.appendChild($cardText);
+
+  return $card;
+}
+
+function objectToListDOM(object) {
+  // <div class="card">
+  //   <div class="card-image">
+  //     <img src="https://cdn.myanimelist.net/images/manga/5/IMAGENUMBER.jpg" alt="">
+  //   </div>
+  //   <div class="card-text">
+  //     <h4>Title Text</h4>
+  //     <p>Description Text</p>
+  //   </div>
+  // </div>
+
+  const $card = document.createElement('div');
+  $card.classList.add('my-card');
   $card.classList.add('id-' + object.mal_id);
   const $cardImage = document.createElement('div');
   $cardImage.className = 'card-image';

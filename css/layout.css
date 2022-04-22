@@ -1,6 +1,6 @@
 .container {
   width: 100% - 2rem;
-  max-width: 1400px;
+  max-width: 1200px;
   margin-inline: auto;
   display: grid;
 }

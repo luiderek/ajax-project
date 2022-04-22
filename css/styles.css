@@ -42,7 +42,8 @@
   gap: 1rem;
 }
 
-.card {
+.card,
+.my-card {
   background-color: #032a3c;
   color: white;
   padding: 1rem;
@@ -56,7 +57,8 @@
   margin-inline: 0.5rem;
 }
 
-.card img {
+.card img,
+.my-card img {
   width: 100%;
   margin-top: 0.3em;
 }
