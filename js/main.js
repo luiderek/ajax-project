@@ -32,14 +32,14 @@ window.addEventListener('DOMContentLoaded', function (event) {
 
 $cardContainer.addEventListener('click', function (event) {
   const close = event.target.closest('.card');
-  const targetID = +close.classList[1].split('-')[1];
-  for (const entry of data.entries) {
-    if (entry.mal_id === targetID) {
-      objectToDetailViewDOM(entry);
-      break;
-    }
-  }
   if (close) {
+    const targetID = +close.classList[1].split('-')[1];
+    for (const entry of data.entries) {
+      if (entry.mal_id === targetID) {
+        objectToDetailViewDOM(entry);
+        break;
+      }
+    }
     detailVisibilityToggle();
   }
 });
@@ -333,28 +333,50 @@ function objectToDetailViewDOM(object) {
 
   const $titlewrapper = document.createElement('div');
 
-  const $1 = document.createElement('p');
-  $1.textContent = object.title;
-  $titlewrapper.appendChild($1);
+  const $title = document.createElement('p');
+  $title.textContent = object.title;
+  $titlewrapper.appendChild($title);
   const $img = document.createElement('img');
   $img.setAttribute('src', object.image);
   $img.classList.add('detail-img');
   const $synopsis = document.createElement('p');
-  $synopsis.textContent = object.synopsis;
+  $synopsis.textContent = object.synopsis.split('[')[0];
   $synopsis.classList.add('detail-desc');
-  const $4 = document.createElement('p');
-  $4.textContent = object.status;
-  $4.classList.add('detail-title');
-  $titlewrapper.appendChild($4);
-  const $5 = document.createElement('p');
-  $5.textContent = object.score;
-  $titlewrapper.appendChild($5);
+  const $status = document.createElement('p');
+  $status.textContent = 'Status: ' + object.status;
+  $status.classList.add('detail-title');
+  const $scoreWrap = document.createElement('p');
+  const $score = document.createElement('span');
+  $score.textContent = object.score;
+  const $starI = document.createElement('i');
+  $starI.className = 'fa-solid fa-star';
+  const $authors = document.createElement('p');
+  for (const author of object.authors) {
+    const $auth = document.createElement('span');
+    $auth.textContent = author.name;
+    $authors.appendChild($auth);
+  }
+  const $genreList = document.createElement('div');
+  $genreList.classList.add('detail-tag');
+  for (const genre of object.genres) {
+    const $genre = document.createElement('span');
+    $genre.textContent = genre.name;
+    $genreList.appendChild($genre);
+  }
+  $scoreWrap.appendChild($score);
+  $scoreWrap.appendChild($starI);
+  $titlewrapper.appendChild($authors);
+  $titlewrapper.appendChild($status);
+  $titlewrapper.appendChild($scoreWrap);
   $titlewrapper.className = 'detail-title';
+
+  // <i class="fa-solid fa-star"></i>
 
   // const $7 = document.createElement('p');
   // $7.textContent = object.mal_id;
   $detailContainer.appendChild($titlewrapper);
   $detailContainer.appendChild($img);
+  $detailContainer.appendChild($genreList);
   $detailContainer.appendChild($synopsis);
   // $detailContainer.appendChild($7);
 }

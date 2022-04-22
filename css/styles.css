@@ -125,6 +125,23 @@ h4 {
 
 .detail-desc {
   grid-area: desc;
+  margin: 0;
+}
+
+.detail-tag {
+  grid-area: tag;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail-tag span {
+  margin-right: 0.6rem;
+  margin-top: 0.15rem;
+  margin-bottom: 0.15rem;
+  padding: 0.2rem 0.4rem;
+  background-color: #c4a876;
+  border-radius: 7px;
 }
 
 .detail-img {
@@ -132,7 +149,26 @@ h4 {
   width: 100%;
 }
 
+div.detail-title > p:nth-child(1) {
+  font-weight: bold;
+  font-size: 120%;
+  margin-top: 0;
+  margin-bottom: 0.3em;
+}
+
+div.detail-title > p:nth-child(2) {
+  font-style: italic;
+  margin: 0;
+}
+
+.fa-star {
+  color: gold;
+  font-size: 75%;
+  position: relative;
+  bottom: 0.1rem;
+  left: 0.2rem;
+}
+
 .hidden {
   display: none;
-}
 }
