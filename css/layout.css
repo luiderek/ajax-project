@@ -1,14 +1,15 @@
 .container {
-  width: max(90vw, 100vw - 1rem);
-  max-width: 1000px;
+  width: 100% - 2rem;
+  max-width: 1200px;
   margin-inline: auto;
+  display: grid;
 }
 
 .head-container {
   width: 100%;
   height: 3rem;
   position: fixed;
-  z-index: 3;
+  z-index: 4;
   background-color: #064663;
   color: white;
   display: flex;
@@ -25,6 +26,8 @@
   background-color: #064663;
   margin-left: 50vw;
   padding: 1.5rem 2.5rem;
+  overflow: auto;
+  z-index: 3;
 }
 
 .blur {
@@ -34,16 +37,18 @@
   background-color: rgb(33 33 33 / 66%);
 }
 
-.hidden {
-  display: none;
+.dark-blur {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(20, 20, 20, 0.863);
 }
 
 /* still yet to decide whether to go with flex or grid for this. */
 
-.view-grid {
-  display: flex;
-}
+/* swapping over. it's good practice. */
 
+/*
 .card {
   flex-basis: 100%;
 }
@@ -52,4 +57,4 @@
   .card {
     flex-basis: 45.5%;
   }
-}
+} */

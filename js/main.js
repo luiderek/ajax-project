@@ -9,9 +9,12 @@ const $sidebarGenres = document.querySelector('.sidebar-genres');
 const $sidebarThemes = document.querySelector('.sidebar-themes');
 const $sidebarDemos = document.querySelector('.sidebar-demos');
 const $sidebarStatus = document.querySelector('.sidebar-status');
+const $detailContainer = document.querySelector('.detail-container');
+const $detailModal = document.querySelector('.detail-modal');
+const $myList = document.querySelector('.my-list');
+const $listContainer = document.querySelector('.list-container');
 
 window.addEventListener('DOMContentLoaded', function (event) {
-  // Ideally these three if's should only run once.
   if (data.genres.length === 0) {
     data.genres = updateGenreObjectXMLCall();
   }
@@ -28,12 +31,75 @@ window.addEventListener('DOMContentLoaded', function (event) {
   data.status = [];
 });
 
+$cardContainer.addEventListener('click', function (event) {
+  const close = event.target.closest('.card');
+  if (close) {
+    const targetID = +close.classList[1].split('-')[1];
+    for (const entry of data.entries) {
+      if (entry.mal_id === targetID) {
+        objectToDetailViewDOM(entry);
+        break;
+      }
+    }
+    detailVisibilityToggle();
+  }
+});
+
+$listContainer.addEventListener('click', function (event) {
+  const close = event.target.closest('.my-card');
+  if (close) {
+    const targetID = +close.classList[1].split('-')[1];
+    for (const entry of data.saved) {
+      if (entry.mal_id === targetID) {
+        objectToDetailViewDOM(entry);
+        break;
+      }
+    }
+    detailVisibilityToggle();
+  }
+});
+
+$detailModal.addEventListener('click', function (event) {
+  if (event.target.className.includes('dark-blur')) {
+    detailVisibilityToggle();
+  } else if (event.target.className.includes('detail-save')) {
+    const objectid = +event.target.classList[1].split('-')[1];
+    for (const object of data.entries) {
+      if (object.mal_id === objectid) {
+        data.saved = data.saved.filter(x => x.mal_id !== objectid);
+        data.saved.push(object);
+      }
+    }
+    event.target.classList.toggle('detail-save');
+    event.target.classList.toggle('detail-remove');
+    event.target.textContent = 'Remove';
+  } else if (event.target.className.includes('detail-remove')) {
+    const objectid = +event.target.classList[1].split('-')[1];
+    data.saved = data.saved.filter(x => x.mal_id !== objectid);
+    event.target.classList.toggle('detail-save');
+    event.target.classList.toggle('detail-remove');
+    event.target.textContent = 'Save';
+    listContainerClearDOM();
+    renderList();
+  }
+});
+
 $headbarMenu.addEventListener('click', function (event) {
   sidebarVisibilityToggle();
 });
 
 $sidebarMenu.addEventListener('click', function (event) {
   if (event.target.className.includes('blur')) {
+    sidebarVisibilityToggle();
+  }
+});
+
+$myList.addEventListener('click', function (event) {
+  if ($listContainer.classList.contains('hidden')) {
+    swapCardListViews();
+    listContainerClearDOM();
+    renderList();
+  } else {
     sidebarVisibilityToggle();
   }
 });
@@ -65,6 +131,16 @@ $sidebarStatus.addEventListener('click', function (event) {
 function sidebarVisibilityToggle() {
   $sidebarMenu.classList.toggle('blur');
   $sidebarContainer.classList.toggle('hidden');
+}
+
+function detailVisibilityToggle() {
+  $detailModal.classList.toggle('dark-blur');
+  $detailContainer.classList.toggle('hidden');
+}
+
+function swapCardListViews() {
+  $cardContainer.classList.toggle('hidden');
+  $listContainer.classList.toggle('hidden');
 }
 
 const $sidebarSearchbar = document.querySelector('form#search');
@@ -177,22 +253,48 @@ function updateDemographicObjectXMLCall() {
   xhr.send();
 }
 
-// eslint-disable-next-line no-unused-vars
-function currentDisplayedGenres() {
-  const genrelist = new Set();
-  for (const entry of data.entries) {
-    for (const genre of entry.genres) {
-      genrelist.add(genre.name);
-    }
-  }
-  return genrelist;
-}
-
 function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
+  const apiParams = getParams(q);
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&min_score=4' + apiParams);
+  xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    cardContainerClearDOM();
+    if ($cardContainer.classList.contains('hidden')) {
+      swapCardListViews();
+    }
+    if (xhr.response.data.length) {
+      data.entries = [];
+      for (let i = 0; i < xhr.response.data.length; i++) {
+        const viewObject = {
+          title: xhr.response.data[i].title,
+          image: xhr.response.data[i].images.jpg.image_url,
+          synopsis: xhr.response.data[i].synopsis.split('[')[0],
+          genres: xhr.response.data[i].genres,
+          status: xhr.response.data[i].status,
+          authors: xhr.response.data[i].authors,
+          score: xhr.response.data[i].score,
+          demo: xhr.response.data[i].demographics,
+          mal_id: xhr.response.data[i].mal_id
+        };
+        data.entries.push(viewObject);
+      }
+      renderEntries();
+    } else {
+      const $nothingFound = document.createElement('p');
+      $nothingFound.textContent = 'Nothing found with endpoint: ' + getParams(q);
+      $nothingFound.className = 'no-find';
+      $cardContainer.appendChild($nothingFound);
+    }
+  });
+  xhr.send();
+}
+
+function getParams(q) {
   let apiParams = '';
   if (data.genreInclude.length) {
-    apiParams += '&genres_include=' + data.genreInclude.join(',');
+    apiParams += '&genres=' + data.genreInclude.join(',');
   }
   if (data.genreExclude.length) {
     apiParams += '&genres_exclude=' + data.genreExclude.join(',');
@@ -200,35 +302,21 @@ function getJSOMFromAPI(q) {
   if (data.status.length) {
     apiParams += '&status=' + data.status.join(',');
   }
-
-  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&min_score=4' + apiParams + '&q=' + q);
-  xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
-  xhr.responseType = 'json';
-  xhr.addEventListener('load', function () {
-    if (xhr.response.data.length) {
-      data.entries = [];
-      for (let i = 0; i < xhr.response.data.length; i++) {
-        const viewObject = {
-          title: xhr.response.data[i].title,
-          image: xhr.response.data[i].images.jpg.image_url,
-          synopsis: xhr.response.data[i].synopsis,
-          genres: xhr.response.data[i].genres,
-          status: xhr.response.data[i].status
-        };
-        data.entries.push(viewObject);
-      }
-      cardContainerClearDOM();
-      renderDataObject();
-    } else {
-      // query finds nothing
-    }
-  });
-  xhr.send();
+  if (q) {
+    apiParams += '&q=' + q;
+  }
+  return apiParams;
 }
 
-function renderDataObject() {
+function renderEntries() {
   for (const entry of data.entries) {
-    $cardContainer.appendChild(cardObjectToDOM(entry));
+    $cardContainer.appendChild(objectToCardDOM(entry));
+  }
+}
+
+function renderList() {
+  for (const entry of data.saved) {
+    $listContainer.appendChild(objectToListDOM(entry));
   }
 }
 
@@ -237,9 +325,25 @@ function cardContainerClearDOM() {
   for (const node of $cardNodeList) {
     node.remove();
   }
+  removeNothing();
 }
 
-function cardObjectToDOM(object) {
+function listContainerClearDOM() {
+  const $cardNodeList = document.querySelectorAll('.my-card');
+  for (const node of $cardNodeList) {
+    node.remove();
+  }
+  removeNothing();
+}
+
+function removeNothing() {
+  const $nothing = document.querySelector('.no-find');
+  if ($nothing) {
+    $nothing.remove();
+  }
+}
+
+function objectToCardDOM(object) {
   // <div class="card">
   //   <div class="card-image">
   //     <img src="https://cdn.myanimelist.net/images/manga/5/IMAGENUMBER.jpg" alt="">
@@ -251,7 +355,8 @@ function cardObjectToDOM(object) {
   // </div>
 
   const $card = document.createElement('div');
-  $card.className = 'card';
+  $card.classList.add('card');
+  $card.classList.add('id-' + object.mal_id);
   const $cardImage = document.createElement('div');
   $cardImage.className = 'card-image';
   const $cardText = document.createElement('div');
@@ -273,6 +378,117 @@ function cardObjectToDOM(object) {
   $card.appendChild($cardText);
 
   return $card;
+}
+
+function objectToListDOM(object) {
+  // <div class="my-card id-___">
+  //   <div class="card-image">
+  //     <img src="https://cdn.myanimelist.net/images/manga/5/IMAGENUMBER.jpg" alt="">
+  //   </div>
+  //   <div class="card-text">
+  //     <h4>Title Text</h4>
+  //   </div>
+  // </div>
+
+  const $card = document.createElement('div');
+  $card.classList.add('my-card');
+  $card.classList.add('id-' + object.mal_id);
+  const $cardImage = document.createElement('div');
+  $cardImage.className = 'card-image';
+  const $cardText = document.createElement('div');
+  const $img = document.createElement('img');
+  $cardText.className = 'card-text';
+  const $h4 = document.createElement('h4');
+  const $p = document.createElement('p');
+
+  if (object) {
+    $img.setAttribute('src', object.image);
+    $h4.textContent = object.title;
+    $p.textContent = object.authors[0].name;
+  }
+
+  $cardText.appendChild($h4);
+  $cardText.appendChild($p);
+  $cardImage.appendChild($img);
+  $card.appendChild($cardImage);
+  $card.appendChild($cardText);
+
+  return $card;
+}
+
+// eslint-disable-next-line no-unused-vars
+function objectToDetailViewDOM(object) {
+  clearDetailView();
+  // object properties:
+  // title image synopsis genres[] status authors[] score demo[] mal_id
+
+  const $titlewrapper = document.createElement('div');
+
+  const $title = document.createElement('p');
+  $title.textContent = object.title;
+  $titlewrapper.appendChild($title);
+  const $img = document.createElement('img');
+  $img.setAttribute('src', object.image);
+  $img.classList.add('detail-img');
+  const $synopsis = document.createElement('p');
+  $synopsis.textContent = object.synopsis;
+  $synopsis.classList.add('detail-desc');
+  const $status = document.createElement('p');
+  $status.textContent = 'Status: ' + object.status;
+  $status.classList.add('detail-title');
+  const $scoreWrap = document.createElement('p');
+  const $score = document.createElement('span');
+  $score.textContent = object.score;
+  const $starI = document.createElement('i');
+  $starI.className = 'fa-solid fa-star';
+  const $authors = document.createElement('p');
+  for (const author of object.authors) {
+    const $auth = document.createElement('span');
+    $auth.textContent = author.name;
+    $authors.appendChild($auth);
+  }
+  const $genreList = document.createElement('div');
+  $genreList.classList.add('detail-tag');
+  for (const genre of object.genres) {
+    const $genre = document.createElement('span');
+    $genre.textContent = genre.name;
+    $genreList.appendChild($genre);
+  }
+
+  const $saveButton = document.createElement('button');
+  if (data.saved.some(x => x.mal_id === object.mal_id)) {
+    $saveButton.textContent = 'Remove';
+    $saveButton.classList.add('detail-remove');
+  } else {
+    $saveButton.textContent = 'Save';
+    $saveButton.classList.add('detail-save');
+  }
+  $saveButton.classList.add('saveid-' + object.mal_id);
+
+  $scoreWrap.appendChild($score);
+  $scoreWrap.appendChild($starI);
+  $titlewrapper.appendChild($authors);
+  $titlewrapper.appendChild($status);
+  $titlewrapper.appendChild($scoreWrap);
+  $titlewrapper.appendChild($saveButton);
+
+  $titlewrapper.className = 'detail-title';
+
+  // <i class="fa-solid fa-star"></i>
+
+  // const $7 = document.createElement('p');
+  // $7.textContent = object.mal_id;
+  $detailContainer.appendChild($titlewrapper);
+  $detailContainer.appendChild($img);
+  $detailContainer.appendChild($genreList);
+  $detailContainer.appendChild($synopsis);
+  // $detailContainer.appendChild($7);
+}
+
+function clearDetailView() {
+  while ($detailContainer.firstChild) {
+    $detailContainer.removeChild($detailContainer.firstChild);
+  }
 }
 
 function cycleGenreCheckbox(element) {

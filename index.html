@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AJAX Project</title>
+  <title>YALM</title>
   <link rel="icon" href="images/favicon.ico">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -24,10 +24,11 @@
       <div class="sidebar-container hidden">
         <form id="search">
           <input type="text" placeholder="Search">
-          <!-- <i class="fa-solid fa-square"></i>
-          <i class="fa-solid fa-square-check"></i>
-          <i class="fa-solid fa-square-xmark"></i> -->
         </form>
+
+        <div class="show-list">
+          <h3 class="my-list">My List</h3>
+        </div>
 
         <div class="sidebar-status-toggle">
           <span>Status</span>
@@ -64,11 +65,14 @@
 
       </div>
     </div>
-    <div class="container">
-      <div class="view-grid">
-        <div class="card-container">
-        </div>
+    <div class="detail-modal">
+      <div class="detail-container hidden">
       </div>
+    </div>
+    <div class="container">
+      <div class="card-container">
+      </div>
+      <div class="list-container hidden"></div>
     </div>
   </main>
   <script src="js/data.js"></script>
