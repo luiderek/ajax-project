@@ -28,6 +28,8 @@
 
 .card-container {
   margin-top: 4rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   justify-items: center;
@@ -36,14 +38,15 @@
 
 .list-container {
   margin-top: 4rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   justify-items: center;
   gap: 1rem;
 }
 
-.card,
-.my-card {
+.card {
   background-color: #032a3c;
   color: white;
   padding: 1rem;
@@ -61,6 +64,24 @@
 .my-card img {
   width: 100%;
   margin-top: 0.3em;
+  max-height: 240px;
+  object-fit: cover;
+}
+
+.list-container p {
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+.my-card {
+  width: 100%;
+  background-color: #032a3c;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  max-height: fit-content;
+  gap: 0.5rem;
 }
 
 body > main:nth-child(2) {

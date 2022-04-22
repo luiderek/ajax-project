@@ -381,13 +381,12 @@ function objectToCardDOM(object) {
 }
 
 function objectToListDOM(object) {
-  // <div class="card">
+  // <div class="my-card id-___">
   //   <div class="card-image">
   //     <img src="https://cdn.myanimelist.net/images/manga/5/IMAGENUMBER.jpg" alt="">
   //   </div>
   //   <div class="card-text">
   //     <h4>Title Text</h4>
-  //     <p>Description Text</p>
   //   </div>
   // </div>
 
@@ -405,7 +404,7 @@ function objectToListDOM(object) {
   if (object) {
     $img.setAttribute('src', object.image);
     $h4.textContent = object.title;
-    $p.textContent = object.synopsis;
+    $p.textContent = object.authors[0].name;
   }
 
   $cardText.appendChild($h4);
