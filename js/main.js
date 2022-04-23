@@ -104,9 +104,8 @@ $myList.addEventListener('click', function (event) {
     swapCardListViews();
     listContainerClearDOM();
     renderList();
-  } else {
-    sidebarVisibilityToggle();
   }
+  sidebarVisibilityToggle();
 });
 
 $sidebarGenres.addEventListener('click', function (event) {
