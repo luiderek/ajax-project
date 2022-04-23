@@ -16,7 +16,7 @@
 
 .sidebar-container {
   color: white;
-  width: max(400px, 60vw);
+  width: 100%;
   max-width: 600px;
   right: 0;
 }
@@ -107,6 +107,7 @@ h4 {
   margin-top: 2rem;
   font-weight: bold;
   cursor: pointer;
+  text-align: center;
 }
 
 .fa-square-check,
@@ -161,6 +162,7 @@ h4 {
 .detail-desc {
   grid-area: desc;
   margin: 0;
+  line-height: 1.3;
 }
 
 .detail-tag {
@@ -240,7 +242,8 @@ div.detail-title > p:nth-child(2) {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   justify-items: right;
-  margin-right: 3vw;
+  margin-right: 2rem;
+  margin-left: -2.5rem;
 }
 
 .sidebar-themes {

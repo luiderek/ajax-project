@@ -473,7 +473,7 @@ function objectToDetailViewDOM(object) {
     $genreList.appendChild($genre);
   }
 
-  for (const theme of object.genres) {
+  for (const theme of object.themes) {
     const $theme = document.createElement('span');
     $theme.textContent = theme.name;
     $genreList.appendChild($theme);
