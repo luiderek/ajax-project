@@ -135,7 +135,7 @@ $sidebarStatus.addEventListener('click', function (event) {
 
 function sidebarVisibilityToggle() {
   $sidebarMenu.classList.toggle('blur');
-  $sidebarContainer.classList.toggle('hidden');
+  $sidebarContainer.classList.toggle('offset-right');
 }
 
 function detailVisibilityToggle() {

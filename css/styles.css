@@ -19,6 +19,12 @@
   width: 100%;
   max-width: 600px;
   right: 0;
+  transition: 0.3s ease-in-out;
+}
+
+.offset-right {
+  transform: translateX(110%);
+  top: 3rem;
 }
 
 .sidebar-modal {
