@@ -17,16 +17,12 @@ const $listContainer = document.querySelector('.list-container');
 window.addEventListener('DOMContentLoaded', function (event) {
   if (data.genres.length === 0) {
     data.genres = updateGenreObjectXMLCall();
-  }
-  if (data.themes.length === 0) {
     data.themes = updateThemeObjectXMLCall();
-  }
-  if (data.demographics.length === 0) {
     data.demographics = updateDemographicObjectXMLCall();
+    renderGenreCheckboxes();
+  } else {
+    renderGenreCheckboxes();
   }
-  genreObjectToCheckbox(data.genres, $sidebarGenres);
-  genreObjectToCheckbox(data.themes, $sidebarThemes);
-  genreObjectToCheckbox(data.demographics, $sidebarDemos);
   data.entries = [];
   data.status = [];
   $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
@@ -529,6 +525,12 @@ function cycleGenreCheckbox(element) {
       data.genreInclude.push(genreID);
     }
   }
+}
+
+function renderGenreCheckboxes() {
+  genreObjectToCheckbox(data.genres, $sidebarGenres);
+  genreObjectToCheckbox(data.themes, $sidebarThemes);
+  genreObjectToCheckbox(data.demographics, $sidebarDemos);
 }
 
 function cycleStatusCheckbox(element) {
