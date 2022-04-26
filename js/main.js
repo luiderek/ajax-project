@@ -17,18 +17,15 @@ const $listContainer = document.querySelector('.list-container');
 window.addEventListener('DOMContentLoaded', function (event) {
   if (data.genres.length === 0) {
     data.genres = updateGenreObjectXMLCall();
-  }
-  if (data.themes.length === 0) {
     data.themes = updateThemeObjectXMLCall();
-  }
-  if (data.demographics.length === 0) {
     data.demographics = updateDemographicObjectXMLCall();
+    renderGenreCheckboxes();
+  } else {
+    renderGenreCheckboxes();
   }
-  genreObjectToCheckbox(data.genres, $sidebarGenres);
-  genreObjectToCheckbox(data.themes, $sidebarThemes);
-  genreObjectToCheckbox(data.demographics, $sidebarDemos);
   data.entries = [];
   data.status = [];
+  $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
 });
 
 $cardContainer.addEventListener('click', function (event) {
@@ -73,12 +70,19 @@ $detailModal.addEventListener('click', function (event) {
     event.target.classList.toggle('detail-save');
     event.target.classList.toggle('detail-remove');
     event.target.textContent = 'Remove';
+    $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
   } else if (event.target.className.includes('detail-remove')) {
     const objectid = +event.target.classList[1].split('-')[1];
     data.saved = data.saved.filter(x => x.mal_id !== objectid);
     event.target.classList.toggle('detail-save');
     event.target.classList.toggle('detail-remove');
     event.target.textContent = 'Save';
+    $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
+    if (!$listContainer.classList.contains('hidden')) {
+      detailVisibilityToggle();
+    }
+  }
+  if (!$listContainer.classList.contains('hidden')) {
     listContainerClearDOM();
     renderList();
   }
@@ -99,9 +103,8 @@ $myList.addEventListener('click', function (event) {
     swapCardListViews();
     listContainerClearDOM();
     renderList();
-  } else {
-    sidebarVisibilityToggle();
   }
+  sidebarVisibilityToggle();
 });
 
 $sidebarGenres.addEventListener('click', function (event) {
@@ -130,7 +133,7 @@ $sidebarStatus.addEventListener('click', function (event) {
 
 function sidebarVisibilityToggle() {
   $sidebarMenu.classList.toggle('blur');
-  $sidebarContainer.classList.toggle('hidden');
+  $sidebarContainer.classList.toggle('offset-right');
 }
 
 function detailVisibilityToggle() {
@@ -256,7 +259,7 @@ function updateDemographicObjectXMLCall() {
 function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
   const apiParams = getParams(q);
-  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&min_score=4' + apiParams);
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?min_score=3' + apiParams);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
@@ -270,8 +273,9 @@ function getJSOMFromAPI(q) {
         const viewObject = {
           title: xhr.response.data[i].title,
           image: xhr.response.data[i].images.jpg.image_url,
-          synopsis: xhr.response.data[i].synopsis.split('[')[0],
+          synopsis: xhr.response.data[i].synopsis,
           genres: xhr.response.data[i].genres,
+          themes: xhr.response.data[i].themes,
           status: xhr.response.data[i].status,
           authors: xhr.response.data[i].authors,
           score: xhr.response.data[i].score,
@@ -292,7 +296,7 @@ function getJSOMFromAPI(q) {
 }
 
 function getParams(q) {
-  let apiParams = '';
+  let apiParams = '&order_by=score&sort=desc';
   if (data.genreInclude.length) {
     apiParams += '&genres=' + data.genreInclude.join(',');
   }
@@ -368,7 +372,8 @@ function objectToCardDOM(object) {
   if (object) {
     $img.setAttribute('src', object.image);
     $h4.textContent = object.title;
-    $p.textContent = object.synopsis;
+    // I only need some of the text since it will overflow anyways.
+    $p.textContent = object.synopsis.slice(0, 650);
   }
 
   $cardText.appendChild($h4);
@@ -427,32 +432,50 @@ function objectToDetailViewDOM(object) {
   const $title = document.createElement('p');
   $title.textContent = object.title;
   $titlewrapper.appendChild($title);
+
   const $img = document.createElement('img');
   $img.setAttribute('src', object.image);
   $img.classList.add('detail-img');
+
   const $synopsis = document.createElement('p');
   $synopsis.textContent = object.synopsis;
   $synopsis.classList.add('detail-desc');
-  const $status = document.createElement('p');
+
+  const $status = document.createElement('span');
   $status.textContent = 'Status: ' + object.status;
-  $status.classList.add('detail-title');
+  $status.classList.add('detail-status');
+
   const $scoreWrap = document.createElement('p');
   const $score = document.createElement('span');
   $score.textContent = object.score;
+
   const $starI = document.createElement('i');
   $starI.className = 'fa-solid fa-star';
+
   const $authors = document.createElement('p');
   for (const author of object.authors) {
     const $auth = document.createElement('span');
     $auth.textContent = author.name;
     $authors.appendChild($auth);
   }
+
   const $genreList = document.createElement('div');
   $genreList.classList.add('detail-tag');
+
+  const $demo = document.createElement('span');
+  $demo.textContent = object.demo[0].name;
+  $genreList.appendChild($demo);
+
   for (const genre of object.genres) {
     const $genre = document.createElement('span');
     $genre.textContent = genre.name;
     $genreList.appendChild($genre);
+  }
+
+  for (const theme of object.themes) {
+    const $theme = document.createElement('span');
+    $theme.textContent = theme.name;
+    $genreList.appendChild($theme);
   }
 
   const $saveButton = document.createElement('button');
@@ -467,8 +490,9 @@ function objectToDetailViewDOM(object) {
 
   $scoreWrap.appendChild($score);
   $scoreWrap.appendChild($starI);
+  $scoreWrap.appendChild($status);
   $titlewrapper.appendChild($authors);
-  $titlewrapper.appendChild($status);
+  // $titlewrapper.appendChild($status);
   $titlewrapper.appendChild($scoreWrap);
   $titlewrapper.appendChild($saveButton);
 
@@ -476,13 +500,10 @@ function objectToDetailViewDOM(object) {
 
   // <i class="fa-solid fa-star"></i>
 
-  // const $7 = document.createElement('p');
-  // $7.textContent = object.mal_id;
   $detailContainer.appendChild($titlewrapper);
   $detailContainer.appendChild($img);
   $detailContainer.appendChild($genreList);
   $detailContainer.appendChild($synopsis);
-  // $detailContainer.appendChild($7);
 }
 
 function clearDetailView() {
@@ -509,6 +530,12 @@ function cycleGenreCheckbox(element) {
       data.genreInclude.push(genreID);
     }
   }
+}
+
+function renderGenreCheckboxes() {
+  genreObjectToCheckbox(data.genres, $sidebarGenres);
+  genreObjectToCheckbox(data.themes, $sidebarThemes);
+  genreObjectToCheckbox(data.demographics, $sidebarDemos);
 }
 
 function cycleStatusCheckbox(element) {
