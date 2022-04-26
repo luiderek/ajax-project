@@ -256,7 +256,7 @@ function updateDemographicObjectXMLCall() {
 function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
   const apiParams = getParams(q);
-  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?limit=8&min_score=4' + apiParams);
+  const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?min_score=3' + apiParams);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
@@ -270,7 +270,7 @@ function getJSOMFromAPI(q) {
         const viewObject = {
           title: xhr.response.data[i].title,
           image: xhr.response.data[i].images.jpg.image_url,
-          synopsis: xhr.response.data[i].synopsis.split('[')[0],
+          synopsis: xhr.response.data[i].synopsis,
           genres: xhr.response.data[i].genres,
           themes: xhr.response.data[i].themes,
           status: xhr.response.data[i].status,
@@ -293,7 +293,7 @@ function getJSOMFromAPI(q) {
 }
 
 function getParams(q) {
-  let apiParams = '';
+  let apiParams = '&order_by=score&sort=desc';
   if (data.genreInclude.length) {
     apiParams += '&genres=' + data.genreInclude.join(',');
   }
@@ -369,7 +369,8 @@ function objectToCardDOM(object) {
   if (object) {
     $img.setAttribute('src', object.image);
     $h4.textContent = object.title;
-    $p.textContent = object.synopsis;
+    // I only need some of the text since it will overflow anyways.
+    $p.textContent = object.synopsis.slice(0, 650);
   }
 
   $cardText.appendChild($h4);
