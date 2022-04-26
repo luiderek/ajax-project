@@ -78,6 +78,9 @@ $detailModal.addEventListener('click', function (event) {
     event.target.classList.toggle('detail-remove');
     event.target.textContent = 'Save';
     $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
+    if (!$listContainer.classList.contains('hidden')) {
+      detailVisibilityToggle();
+    }
   }
   if (!$listContainer.classList.contains('hidden')) {
     listContainerClearDOM();
@@ -438,9 +441,9 @@ function objectToDetailViewDOM(object) {
   $synopsis.textContent = object.synopsis;
   $synopsis.classList.add('detail-desc');
 
-  const $status = document.createElement('p');
+  const $status = document.createElement('span');
   $status.textContent = 'Status: ' + object.status;
-  $status.classList.add('detail-title');
+  $status.classList.add('detail-status');
 
   const $scoreWrap = document.createElement('p');
   const $score = document.createElement('span');
@@ -487,8 +490,9 @@ function objectToDetailViewDOM(object) {
 
   $scoreWrap.appendChild($score);
   $scoreWrap.appendChild($starI);
+  $scoreWrap.appendChild($status);
   $titlewrapper.appendChild($authors);
-  $titlewrapper.appendChild($status);
+  // $titlewrapper.appendChild($status);
   $titlewrapper.appendChild($scoreWrap);
   $titlewrapper.appendChild($saveButton);
 
