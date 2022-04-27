@@ -20,6 +20,9 @@
   max-width: 600px;
   right: 0;
   transition: 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .offset-right {
@@ -259,6 +262,23 @@ div.detail-title > p:nth-child(2) {
 
 .sidebar-themes {
   margin-bottom: 3rem;
+}
+
+#export-list,
+#import-list {
+  width: 60%;
+}
+
+.sidebar-export,
+.sidebar-import {
+  display: flex;
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+  gap: 1em;
+}
+
+.lower-sidebar {
+  margin-bottom: 2.5em;
 }
 
 .hidden {
