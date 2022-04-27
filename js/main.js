@@ -553,17 +553,23 @@ function cycleStatusCheckbox(element) {
 
 const $exportClipboard = document.querySelector('.export-clipboard');
 $exportClipboard.addEventListener('click', clipboardText);
+const $exportTextbox = document.getElementById('export-list');
 
 function clipboardText(event) {
-  var $copyText = document.getElementById('export-list');
+  updateClipboardText();
+  // just in case.
 
-  $copyText.select();
-  $copyText.setSelectionRange(0, 99999); /* For mobile */
+  $exportTextbox.select();
+  $exportTextbox.setSelectionRange(0, 99999); /* For mobile */
 
-  navigator.clipboard.writeText($copyText.value);
+  navigator.clipboard.writeText($exportTextbox.value);
 
   // i need to do a better tooltip than an alert but the w3 implementation was wonky.
-  alert('Copied text: ' + $copyText.value);
+  alert('Copied text: ' + $exportTextbox.value);
+}
+
+function updateClipboardText() {
+  $exportTextbox.value = JSON.stringify(data.saved);
 }
 
 const $importButton = document.querySelector('.import-button');
@@ -575,6 +581,13 @@ function importCode(event) {
   $load.select();
   $load.setSelectionRange(0, 99999); /* For mobile */
 
+  // needs some checks / reassurance for security reasons
+  // idk if this sets the program up for arbitrary code execution
+  data.saved = JSON.parse($load.value);
   // as of now does literally nothing but laying foundations.
-  alert('Reading in: ' + $load.value);
+  // alert('Reading in: ' + $load.value);
+
+  $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
+  listContainerClearDOM();
+  renderList();
 }

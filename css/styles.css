@@ -266,19 +266,24 @@ div.detail-title > p:nth-child(2) {
 
 #export-list,
 #import-list {
-  width: 60%;
+  width: 50%;
 }
 
 .sidebar-export,
 .sidebar-import {
   display: flex;
-  margin-left: 2rem;
   margin-top: 0.5rem;
   gap: 1em;
 }
 
+#import-button,
+#export-clipboard {
+  cursor: pointer;
+}
+
 .lower-sidebar {
   margin-bottom: 2.5em;
+  margin-left: 15%;
 }
 
 .hidden {
