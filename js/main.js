@@ -19,9 +19,10 @@ window.addEventListener('DOMContentLoaded', function (event) {
     data.genres = updateGenreObjectXMLCall();
     data.themes = updateThemeObjectXMLCall();
     data.demographics = updateDemographicObjectXMLCall();
-    renderGenreCheckboxes();
   } else {
-    renderGenreCheckboxes();
+    genreObjectToCheckbox(data.genres, $sidebarGenres);
+    genreObjectToCheckbox(data.themes, $sidebarThemes);
+    genreObjectToCheckbox(data.demographics, $sidebarDemos);
   }
   data.entries = [];
   data.status = [];
@@ -220,6 +221,7 @@ function updateGenreObjectXMLCall() {
       genreObj[genre.name] = genre.mal_id;
     }
     data.genres = genreObj;
+    genreObjectToCheckbox(data.genres, $sidebarGenres);
   });
   xhr.send();
 }
@@ -236,6 +238,7 @@ function updateThemeObjectXMLCall() {
       themeObj[genre.name] = genre.mal_id;
     }
     data.themes = themeObj;
+    genreObjectToCheckbox(data.themes, $sidebarThemes);
   });
   xhr.send();
 }
@@ -252,6 +255,7 @@ function updateDemographicObjectXMLCall() {
       demoObj[genre.name] = genre.mal_id;
     }
     data.demographics = demoObj;
+    genreObjectToCheckbox(data.demographics, $sidebarDemos);
   });
   xhr.send();
 }
@@ -530,12 +534,6 @@ function cycleGenreCheckbox(element) {
       data.genreInclude.push(genreID);
     }
   }
-}
-
-function renderGenreCheckboxes() {
-  genreObjectToCheckbox(data.genres, $sidebarGenres);
-  genreObjectToCheckbox(data.themes, $sidebarThemes);
-  genreObjectToCheckbox(data.demographics, $sidebarDemos);
 }
 
 function cycleStatusCheckbox(element) {
