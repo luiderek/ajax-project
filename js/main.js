@@ -466,9 +466,13 @@ function objectToDetailViewDOM(object) {
   const $genreList = document.createElement('div');
   $genreList.classList.add('detail-tag');
 
-  const $demo = document.createElement('span');
-  $demo.textContent = object.demo[0].name;
-  $genreList.appendChild($demo);
+  // Some of the objects don't have demographic data, should fix a break.
+  if (object.demo[0]) {
+    const $demo = document.createElement('span');
+    $demo.textContent = object.demo[0].name;
+    $demo.className = 'detail-demographic-tag';
+    $genreList.appendChild($demo);
+  }
 
   for (const genre of object.genres) {
     const $genre = document.createElement('span');
