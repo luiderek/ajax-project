@@ -27,6 +27,9 @@ window.addEventListener('DOMContentLoaded', function (event) {
   }
   data.entries = [];
   data.status = [];
+  if (!data.saved) {
+    data.saved = [];
+  }
   $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
 });
 
