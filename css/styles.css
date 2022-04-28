@@ -20,6 +20,9 @@
   max-width: 600px;
   right: 0;
   transition: 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .offset-right {
@@ -185,10 +188,11 @@ h4 {
   padding: 0.2rem 0.4rem;
   background-color: #c4a876;
   border-radius: 7px;
+  user-select: none;
 }
 
 /* demographic */
-.detail-tag > span:nth-child(1) {
+.detail-tag span.detail-demographic-tag {
   background-color: darkgoldenrod;
 }
 
@@ -259,6 +263,47 @@ div.detail-title > p:nth-child(2) {
 
 .sidebar-themes {
   margin-bottom: 3rem;
+}
+
+#import-list {
+  width: 38%;
+}
+
+#export-list {
+  display: none;
+}
+
+.sidebar-import {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+  gap: 0.8em;
+  margin-inline: -2em;
+}
+
+#import-button,
+#export-clipboard {
+  cursor: pointer;
+}
+
+.lower-sidebar {
+  margin-bottom: 2.5em;
+}
+
+.clipboard-notif {
+  position: absolute;
+  bottom: 6em;
+  color: #064663;
+  user-select: none;
+  text-align: center;
+  transition: 3.5s ease-in;
+  opacity: 0;
+}
+
+.export-clipboard:active ~ .clipboard-notif {
+  color: white;
+  opacity: 1;
+  transition: 0.1s;
 }
 
 .hidden {

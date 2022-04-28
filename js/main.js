@@ -1,4 +1,5 @@
 /* global data */
+/* global LZString */
 /* exported data */
 
 const $headbarMenu = document.querySelector('.headbar-menu-toggle');
@@ -19,12 +20,16 @@ window.addEventListener('DOMContentLoaded', function (event) {
     data.genres = updateGenreObjectXMLCall();
     data.themes = updateThemeObjectXMLCall();
     data.demographics = updateDemographicObjectXMLCall();
-    renderGenreCheckboxes();
   } else {
-    renderGenreCheckboxes();
+    genreObjectToCheckbox(data.genres, $sidebarGenres);
+    genreObjectToCheckbox(data.themes, $sidebarThemes);
+    genreObjectToCheckbox(data.demographics, $sidebarDemos);
   }
   data.entries = [];
   data.status = [];
+  if (!data.saved) {
+    data.saved = [];
+  }
   $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
 });
 
@@ -220,6 +225,7 @@ function updateGenreObjectXMLCall() {
       genreObj[genre.name] = genre.mal_id;
     }
     data.genres = genreObj;
+    genreObjectToCheckbox(data.genres, $sidebarGenres);
   });
   xhr.send();
 }
@@ -236,6 +242,7 @@ function updateThemeObjectXMLCall() {
       themeObj[genre.name] = genre.mal_id;
     }
     data.themes = themeObj;
+    genreObjectToCheckbox(data.themes, $sidebarThemes);
   });
   xhr.send();
 }
@@ -252,6 +259,7 @@ function updateDemographicObjectXMLCall() {
       demoObj[genre.name] = genre.mal_id;
     }
     data.demographics = demoObj;
+    genreObjectToCheckbox(data.demographics, $sidebarDemos);
   });
   xhr.send();
 }
@@ -462,9 +470,13 @@ function objectToDetailViewDOM(object) {
   const $genreList = document.createElement('div');
   $genreList.classList.add('detail-tag');
 
-  const $demo = document.createElement('span');
-  $demo.textContent = object.demo[0].name;
-  $genreList.appendChild($demo);
+  // Some of the objects don't have demographic data, should fix a break.
+  if (object.demo[0]) {
+    const $demo = document.createElement('span');
+    $demo.textContent = object.demo[0].name;
+    $demo.className = 'detail-demographic-tag';
+    $genreList.appendChild($demo);
+  }
 
   for (const genre of object.genres) {
     const $genre = document.createElement('span');
@@ -532,12 +544,6 @@ function cycleGenreCheckbox(element) {
   }
 }
 
-function renderGenreCheckboxes() {
-  genreObjectToCheckbox(data.genres, $sidebarGenres);
-  genreObjectToCheckbox(data.themes, $sidebarThemes);
-  genreObjectToCheckbox(data.demographics, $sidebarDemos);
-}
-
 function cycleStatusCheckbox(element) {
   if (element.className.includes('square')) {
     const statusName = element.parentElement.id.split('-')[1];
@@ -549,4 +555,48 @@ function cycleStatusCheckbox(element) {
       data.status.push(statusName);
     }
   }
+}
+
+const $exportClipboard = document.querySelector('.export-clipboard');
+$exportClipboard.addEventListener('click', clipboardText);
+const $exportTextbox = document.getElementById('export-list');
+
+function clipboardText(event) {
+  updateClipboardText();
+  // just in case.
+
+  $exportTextbox.select();
+  // $exportTextbox.setSelectionRange(0, 99999); /* For mobile */
+
+  navigator.clipboard.writeText($exportTextbox.value);
+
+  // i need to do a better tooltip than an alert but the w3 implementation was wonky.
+  // alert('Copied text: ' + $exportTextbox.value);
+}
+
+function updateClipboardText() {
+  $exportTextbox.value = LZString.compressToUTF16(JSON.stringify(data.saved));
+}
+
+const $importButton = document.querySelector('.import-button');
+$importButton.addEventListener('click', importCode);
+
+function importCode(event) {
+  var $load = document.getElementById('import-list');
+
+  $load.select();
+
+  // needs some checks / reassurance for security reasons
+  // idk if this sets the program up for arbitrary code execution
+  data.saved = JSON.parse(LZString.decompressFromUTF16($load.value));
+  // as of now does literally nothing but laying foundations.
+  // alert('Reading in: ' + $load.value);
+
+  $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
+  if ($listContainer.classList.contains('hidden')) {
+    swapCardListViews();
+  }
+  sidebarVisibilityToggle();
+  listContainerClearDOM();
+  renderList();
 }

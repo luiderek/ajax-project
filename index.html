@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
@@ -25,45 +25,58 @@
   <main>
     <div class="sidebar-modal">
       <div class="sidebar-container offset-right">
-        <form id="search">
-          <input type="text" placeholder="Search">
-        </form>
 
-        <div class="show-list">
-          <h3 class="my-list">View My List</h3>
+        <div class="upper-sidebar">
+          <form id="search">
+            <input type="text" placeholder="Search">
+          </form>
+
+          <div class="show-list">
+            <h3 class="my-list">View My List</h3>
+          </div>
+
+          <div class="sidebar-status-toggle">
+            <span>Status</span>
+            <i class="fa-solid fa-caret-down"></i>
+          </div>
+          <div class="sidebar-status hidden">
+            <span id="status-complete"><span>Complete</span><i class="fa-solid fa-square"></i></span>
+            <span id="status-publishing"><span>Publishing</span><i class="fa-solid fa-square"></i></span>
+            <span id="status-hiatus"><span>Hiatus</span><i class="fa-solid fa-square"></i></span>
+            <span id="status-discontinued"><span>Discontinued</span><i class="fa-solid fa-square"></i></span>
+            <span id="status-upcoming"><span>Upcoming</span><i class="fa-solid fa-square"></i></span>
+          </div>
+
+          <div class="sidebar-demo-toggle">
+            <span>Demographics</span>
+            <i class="fa-solid fa-caret-down"></i>
+          </div>
+          <div class="sidebar-demos hidden">
+          </div>
+
+          <div class="sidebar-genre-toggle">
+            <span>Genres</span>
+            <i class="fa-solid fa-caret-down"></i>
+          </div>
+          <div class="sidebar-genres hidden">
+          </div>
+
+          <div class="sidebar-theme-toggle">
+            <span>Themes</span>
+            <i class="fa-solid fa-caret-down"></i>
+          </div>
+          <div class="sidebar-themes hidden">
+          </div>
         </div>
 
-        <div class="sidebar-status-toggle">
-          <span>Status</span>
-          <i class="fa-solid fa-caret-down"></i>
-        </div>
-        <div class="sidebar-status hidden">
-          <span id="status-complete"><span>Complete</span><i class="fa-solid fa-square"></i></span>
-          <span id="status-publishing"><span>Publishing</span><i class="fa-solid fa-square"></i></span>
-          <span id="status-hiatus"><span>Hiatus</span><i class="fa-solid fa-square"></i></span>
-          <span id="status-discontinued"><span>Discontinued</span><i class="fa-solid fa-square"></i></span>
-          <span id="status-upcoming"><span>Upcoming</span><i class="fa-solid fa-square"></i></span>
-        </div>
-
-        <div class="sidebar-demo-toggle">
-          <span>Demographics</span>
-          <i class="fa-solid fa-caret-down"></i>
-        </div>
-        <div class="sidebar-demos hidden">
-        </div>
-
-        <div class="sidebar-genre-toggle">
-          <span>Genres</span>
-          <i class="fa-solid fa-caret-down"></i>
-        </div>
-        <div class="sidebar-genres hidden">
-        </div>
-
-        <div class="sidebar-theme-toggle">
-          <span>Themes</span>
-          <i class="fa-solid fa-caret-down"></i>
-        </div>
-        <div class="sidebar-themes hidden">
+        <div class="lower-sidebar">
+          <div class="sidebar-import">
+            <input type="text" id="export-list" placeholder="Export updates here" readonly>
+            <input type="text" id="import-list" placeholder="Import a saved list">
+            <button class="import-button">Load</button>
+            <button class="export-clipboard">Export to Clipboard </button>
+            <span class="clipboard-notif">Export code has been saved to the clipboard.</span>
+          </div>
         </div>
 
       </div>
@@ -80,6 +93,7 @@
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
 </body>
 
 </html>
