@@ -563,12 +563,12 @@ function clipboardText(event) {
   // just in case.
 
   $exportTextbox.select();
-  $exportTextbox.setSelectionRange(0, 99999); /* For mobile */
+  // $exportTextbox.setSelectionRange(0, 99999); /* For mobile */
 
   navigator.clipboard.writeText($exportTextbox.value);
 
   // i need to do a better tooltip than an alert but the w3 implementation was wonky.
-  alert('Copied text: ' + $exportTextbox.value);
+  // alert('Copied text: ' + $exportTextbox.value);
 }
 
 function updateClipboardText() {

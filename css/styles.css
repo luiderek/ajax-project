@@ -290,6 +290,22 @@ div.detail-title > p:nth-child(2) {
   margin-bottom: 2.5em;
 }
 
+.clipboard-notif {
+  position: absolute;
+  bottom: 6em;
+  color: #064663;
+  user-select: none;
+  text-align: center;
+  transition: 3.5s ease-in;
+  opacity: 0;
+}
+
+.export-clipboard:active ~ .clipboard-notif {
+  color: white;
+  opacity: 1;
+  transition: 0.1s;
+}
+
 .hidden {
   display: none;
 }
