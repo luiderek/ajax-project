@@ -1,4 +1,5 @@
 /* global data */
+/* global LZString */
 /* exported data */
 
 const $headbarMenu = document.querySelector('.headbar-menu-toggle');
@@ -571,7 +572,7 @@ function clipboardText(event) {
 }
 
 function updateClipboardText() {
-  $exportTextbox.value = JSON.stringify(data.saved);
+  $exportTextbox.value = LZString.compressToUTF16(JSON.stringify(data.saved));
 }
 
 const $importButton = document.querySelector('.import-button');
@@ -581,15 +582,18 @@ function importCode(event) {
   var $load = document.getElementById('import-list');
 
   $load.select();
-  $load.setSelectionRange(0, 99999); /* For mobile */
 
   // needs some checks / reassurance for security reasons
   // idk if this sets the program up for arbitrary code execution
-  data.saved = JSON.parse($load.value);
+  data.saved = JSON.parse(LZString.decompressFromUTF16($load.value));
   // as of now does literally nothing but laying foundations.
   // alert('Reading in: ' + $load.value);
 
   $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
+  if ($listContainer.classList.contains('hidden')) {
+    swapCardListViews();
+  }
+  sidebarVisibilityToggle();
   listContainerClearDOM();
   renderList();
 }
