@@ -18,7 +18,6 @@ if (previousDataJSON) {
 }
 
 window.addEventListener('beforeunload', function (event) {
-  // i rather wipe tags than preload them honestly.
   data.genreInclude = [];
   data.genreExclude = [12, 49];
   const dataJSON = JSON.stringify(data);

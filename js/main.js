@@ -14,6 +14,7 @@ const $detailContainer = document.querySelector('.detail-container');
 const $detailModal = document.querySelector('.detail-modal');
 const $myList = document.querySelector('.my-list');
 const $listContainer = document.querySelector('.list-container');
+const $loadspin = document.querySelector('.lds-spinner');
 
 window.addEventListener('DOMContentLoaded', function (event) {
   if (data.genres.length === 0) {
@@ -162,39 +163,31 @@ $sidebarSearchbar.addEventListener('submit', function (event) {
 
 const $sidebarGenreToggle = document.querySelector('.sidebar-genre-toggle');
 $sidebarGenreToggle.addEventListener('click', function (event) {
-  if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
-    event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
-    event.target.parentElement.children[1].classList.toggle('fa-caret-down');
-    $sidebarGenres.classList.toggle('hidden');
-  }
+  dropdownToggle(event, $sidebarGenres);
 });
 
 const $sidebarThemeToggle = document.querySelector('.sidebar-theme-toggle');
 $sidebarThemeToggle.addEventListener('click', function (event) {
-  if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
-    event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
-    event.target.parentElement.children[1].classList.toggle('fa-caret-down');
-    $sidebarThemes.classList.toggle('hidden');
-  }
+  dropdownToggle(event, $sidebarThemes);
 });
 
 const $sidebarDemoToggle = document.querySelector('.sidebar-demo-toggle');
 $sidebarDemoToggle.addEventListener('click', function (event) {
-  if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
-    event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
-    event.target.parentElement.children[1].classList.toggle('fa-caret-down');
-    $sidebarDemos.classList.toggle('hidden');
-  }
+  dropdownToggle(event, $sidebarDemos);
 });
 
 const $sidebarStatusToggle = document.querySelector('.sidebar-status-toggle');
 $sidebarStatusToggle.addEventListener('click', function (event) {
+  dropdownToggle(event, $sidebarStatus);
+});
+
+function dropdownToggle(event, element) {
   if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
     event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
     event.target.parentElement.children[1].classList.toggle('fa-caret-down');
-    $sidebarStatus.classList.toggle('hidden');
+    element.classList.toggle('hidden');
   }
-});
+}
 
 function genreObjectToCheckbox(object, $parent) {
   for (const genre in object) {
@@ -218,7 +211,6 @@ function updateGenreObjectXMLCall() {
   xhr.addEventListener('load', function () {
     // there is only 19 unique genres, bugged API spits out 4 copies of it.
     const genredata = xhr.response.data.slice(0, 19);
-    // linter doesn't recognize property assignment
     // eslint-disable-next-line prefer-const
     let genreObj = {};
     for (const genre of genredata) {
@@ -263,8 +255,6 @@ function updateDemographicObjectXMLCall() {
   });
   xhr.send();
 }
-
-const $loadspin = document.querySelector('.lds-spinner');
 
 function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
@@ -385,7 +375,7 @@ function objectToCardDOM(object) {
   if (object) {
     $img.setAttribute('src', object.image);
     $h4.textContent = object.title;
-    // I only need some of the text since it will overflow anyways.
+    // only render some of the text since it will otherwise overflow.
     $p.textContent = object.synopsis.slice(0, 650);
   }
 
@@ -434,7 +424,6 @@ function objectToListDOM(object) {
   return $card;
 }
 
-// eslint-disable-next-line no-unused-vars
 function objectToDetailViewDOM(object) {
   clearDetailView();
   // object properties:
@@ -508,14 +497,11 @@ function objectToDetailViewDOM(object) {
   $scoreWrap.appendChild($score);
   $scoreWrap.appendChild($starI);
   $scoreWrap.appendChild($status);
+
   $titlewrapper.appendChild($authors);
-  // $titlewrapper.appendChild($status);
   $titlewrapper.appendChild($scoreWrap);
   $titlewrapper.appendChild($saveButton);
-
   $titlewrapper.className = 'detail-title';
-
-  // <i class="fa-solid fa-star"></i>
 
   $detailContainer.appendChild($titlewrapper);
   $detailContainer.appendChild($img);
@@ -562,46 +548,40 @@ function cycleStatusCheckbox(element) {
   }
 }
 
-const $exportClipboard = document.querySelector('.export-clipboard');
-$exportClipboard.addEventListener('click', clipboardText);
 const $exportTextbox = document.getElementById('export-list');
+const $sidebarInput = document.querySelector('.sidebar-import');
 
-function clipboardText(event) {
-  updateClipboardText();
-  // just in case.
+$sidebarInput.addEventListener('submit', function (event) {
+  event.preventDefault();
+  if (event.submitter.classList.contains('export-clipboard')) {
+    $exportTextbox.value = LZString.compressToUTF16(JSON.stringify(data.saved));
+    $exportTextbox.select();
+    navigator.clipboard.writeText($exportTextbox.value);
+  } else if (event.submitter.classList.contains('import-button')) {
+    const $load = document.getElementById('import-list');
 
-  $exportTextbox.select();
-  // $exportTextbox.setSelectionRange(0, 99999); /* For mobile */
+    $load.select();
 
-  navigator.clipboard.writeText($exportTextbox.value);
+    const readvalue = JSON.parse(LZString.decompressFromUTF16($load.value));
 
-  // i need to do a better tooltip than an alert but the w3 implementation was wonky.
-  // alert('Copied text: ' + $exportTextbox.value);
-}
+    if (validLoad(readvalue)) {
+      data.saved = readvalue;
+    }
 
-function updateClipboardText() {
-  $exportTextbox.value = LZString.compressToUTF16(JSON.stringify(data.saved));
-}
-
-const $importButton = document.querySelector('.import-button');
-$importButton.addEventListener('click', importCode);
-
-function importCode(event) {
-  var $load = document.getElementById('import-list');
-
-  $load.select();
-
-  // needs some checks / reassurance for security reasons
-  // idk if this sets the program up for arbitrary code execution
-  data.saved = JSON.parse(LZString.decompressFromUTF16($load.value));
-  // as of now does literally nothing but laying foundations.
-  // alert('Reading in: ' + $load.value);
-
-  $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
-  if ($listContainer.classList.contains('hidden')) {
-    swapCardListViews();
+    $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
+    if ($listContainer.classList.contains('hidden')) {
+      swapCardListViews();
+    }
+    sidebarVisibilityToggle();
+    listContainerClearDOM();
+    renderList();
   }
-  sidebarVisibilityToggle();
-  listContainerClearDOM();
-  renderList();
+});
+
+function validLoad(object) {
+  // this will need some more development. more checks needed.
+  if (object !== null) {
+    return true;
+  }
+  return false;
 }

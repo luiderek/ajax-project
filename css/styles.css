@@ -49,10 +49,10 @@
   margin-top: 4rem;
   margin-left: 1rem;
   margin-right: 1rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  justify-items: center;
-  gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem 1.8rem;
+  justify-content: center;
 }
 
 .card {
@@ -192,7 +192,6 @@ h4 {
   user-select: none;
 }
 
-/* demographic */
 .detail-tag span.detail-demographic-tag {
   background-color: darkgoldenrod;
 }
