@@ -14,6 +14,7 @@ const $detailContainer = document.querySelector('.detail-container');
 const $detailModal = document.querySelector('.detail-modal');
 const $myList = document.querySelector('.my-list');
 const $listContainer = document.querySelector('.list-container');
+const $loadspin = document.querySelector('.lds-spinner');
 
 window.addEventListener('DOMContentLoaded', function (event) {
   if (data.genres.length === 0) {
@@ -210,7 +211,6 @@ function updateGenreObjectXMLCall() {
   xhr.addEventListener('load', function () {
     // there is only 19 unique genres, bugged API spits out 4 copies of it.
     const genredata = xhr.response.data.slice(0, 19);
-    // linter doesn't recognize property assignment
     // eslint-disable-next-line prefer-const
     let genreObj = {};
     for (const genre of genredata) {
@@ -255,8 +255,6 @@ function updateDemographicObjectXMLCall() {
   });
   xhr.send();
 }
-
-const $loadspin = document.querySelector('.lds-spinner');
 
 function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
@@ -377,7 +375,7 @@ function objectToCardDOM(object) {
   if (object) {
     $img.setAttribute('src', object.image);
     $h4.textContent = object.title;
-    // I only need some of the text since it will overflow anyways.
+    // only render some of the text since it will otherwise overflow.
     $p.textContent = object.synopsis.slice(0, 650);
   }
 
@@ -426,7 +424,6 @@ function objectToListDOM(object) {
   return $card;
 }
 
-// eslint-disable-next-line no-unused-vars
 function objectToDetailViewDOM(object) {
   clearDetailView();
   // object properties:
@@ -500,14 +497,11 @@ function objectToDetailViewDOM(object) {
   $scoreWrap.appendChild($score);
   $scoreWrap.appendChild($starI);
   $scoreWrap.appendChild($status);
+
   $titlewrapper.appendChild($authors);
-  // $titlewrapper.appendChild($status);
   $titlewrapper.appendChild($scoreWrap);
   $titlewrapper.appendChild($saveButton);
-
   $titlewrapper.className = 'detail-title';
-
-  // <i class="fa-solid fa-star"></i>
 
   $detailContainer.appendChild($titlewrapper);
   $detailContainer.appendChild($img);
