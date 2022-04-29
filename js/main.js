@@ -264,13 +264,17 @@ function updateDemographicObjectXMLCall() {
   xhr.send();
 }
 
+const $loadspin = document.querySelector('.lds-spinner');
+
 function getJSOMFromAPI(q) {
   const xhr = new XMLHttpRequest();
   const apiParams = getParams(q);
   const targetUrl = encodeURIComponent('https://api.jikan.moe/v4/manga' + '?min_score=3' + apiParams);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + targetUrl);
   xhr.responseType = 'json';
+  $loadspin.classList.toggle('hidden');
   xhr.addEventListener('load', function () {
+    $loadspin.classList.toggle('hidden');
     cardContainerClearDOM();
     if ($cardContainer.classList.contains('hidden')) {
       swapCardListViews();
@@ -295,7 +299,8 @@ function getJSOMFromAPI(q) {
       renderEntries();
     } else {
       const $nothingFound = document.createElement('p');
-      $nothingFound.textContent = 'Nothing found with endpoint: ' + getParams(q);
+      $nothingFound.setAttribute('style', 'white-space: pre;');
+      $nothingFound.textContent = 'Nothing found with endpoint: \r\n' + getParams(q);
       $nothingFound.className = 'no-find';
       $cardContainer.appendChild($nothingFound);
     }

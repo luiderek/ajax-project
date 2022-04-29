@@ -36,13 +36,13 @@
 }
 
 .card-container {
-  margin-top: 4rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin-top: 3.8rem;
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+  gap: 0.8rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(445px, 1fr));
   justify-items: center;
-  gap: 1rem;
 }
 
 .list-container {
@@ -60,7 +60,7 @@
   color: white;
   padding: 1rem;
   display: grid;
-  grid-template-columns: 150px 1fr;
+  grid-template-columns: minmax(25%, 1fr) 1.5fr;
   width: 100%;
   max-width: 600px;
   gap: 1rem;
@@ -72,9 +72,8 @@
 .card img,
 .my-card img {
   width: 100%;
-  margin-top: 0.3em;
-  max-height: 240px;
-  object-fit: cover;
+  max-height: 300px;
+  object-fit: contain;
 }
 
 .list-container p {
@@ -140,6 +139,8 @@ h4 {
 
 .no-find {
   color: white;
+  position: fixed;
+  top: 20%;
 }
 
 .detail-container {
@@ -281,8 +282,8 @@ div.detail-title > p:nth-child(2) {
   margin-inline: -2em;
 }
 
-#import-button,
-#export-clipboard {
+.import-button,
+.export-clipboard {
   cursor: pointer;
 }
 
@@ -304,6 +305,103 @@ div.detail-title > p:nth-child(2) {
   color: white;
   opacity: 1;
   transition: 0.1s;
+}
+
+.lds-spinner {
+  color: official;
+  display: inline-block;
+  position: fixed;
+  top: 40vh;
+  left: 45vw;
+  width: 80px;
+  height: 80px;
+}
+
+.lds-spinner div {
+  transform-origin: 40px 40px;
+  animation: lds-spinner 1.2s linear infinite;
+}
+
+.lds-spinner div::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: 37px;
+  width: 6px;
+  height: 18px;
+  border-radius: 20%;
+  background: rgb(122, 173, 240);
+}
+
+.lds-spinner div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -1.1s;
+}
+
+.lds-spinner div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -1s;
+}
+
+.lds-spinner div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.9s;
+}
+
+.lds-spinner div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.8s;
+}
+
+.lds-spinner div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.7s;
+}
+
+.lds-spinner div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.6s;
+}
+
+.lds-spinner div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.5s;
+}
+
+.lds-spinner div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.4s;
+}
+
+.lds-spinner div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.3s;
+}
+
+.lds-spinner div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.2s;
+}
+
+.lds-spinner div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.1s;
+}
+
+.lds-spinner div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+}
+
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 .hidden {
