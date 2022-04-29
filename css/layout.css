@@ -10,20 +10,21 @@
   height: 3rem;
   position: fixed;
   z-index: 4;
-  background-color: #064663;
+  background-color: #003a61;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-left: max(2rem, 52vw - 500px);
   padding-right: max(2rem, 52vw - 500px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .sidebar-container {
   position: fixed;
   width: 50%;
   height: 100%;
-  background-color: #064663;
+  background-color: #002e4e;
   margin-left: 50vw;
   padding: 1.5rem 2.5rem;
   overflow: auto;
@@ -35,13 +36,14 @@
   width: 100%;
   height: 100%;
   background-color: rgb(33 33 33 / 66%);
+  transition-duration: 0.3s;
 }
 
 .dark-blur {
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: rgba(20, 20, 20, 0.863);
+  background-color: rgba(20, 20, 20, 0.75);
 }
 
 @media screen and (max-width: 450px) {
