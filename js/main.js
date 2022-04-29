@@ -162,39 +162,31 @@ $sidebarSearchbar.addEventListener('submit', function (event) {
 
 const $sidebarGenreToggle = document.querySelector('.sidebar-genre-toggle');
 $sidebarGenreToggle.addEventListener('click', function (event) {
-  if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
-    event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
-    event.target.parentElement.children[1].classList.toggle('fa-caret-down');
-    $sidebarGenres.classList.toggle('hidden');
-  }
+  dropdownToggle(event, $sidebarGenres);
 });
 
 const $sidebarThemeToggle = document.querySelector('.sidebar-theme-toggle');
 $sidebarThemeToggle.addEventListener('click', function (event) {
-  if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
-    event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
-    event.target.parentElement.children[1].classList.toggle('fa-caret-down');
-    $sidebarThemes.classList.toggle('hidden');
-  }
+  dropdownToggle(event, $sidebarThemes);
 });
 
 const $sidebarDemoToggle = document.querySelector('.sidebar-demo-toggle');
 $sidebarDemoToggle.addEventListener('click', function (event) {
-  if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
-    event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
-    event.target.parentElement.children[1].classList.toggle('fa-caret-down');
-    $sidebarDemos.classList.toggle('hidden');
-  }
+  dropdownToggle(event, $sidebarDemos);
 });
 
 const $sidebarStatusToggle = document.querySelector('.sidebar-status-toggle');
 $sidebarStatusToggle.addEventListener('click', function (event) {
+  dropdownToggle(event, $sidebarStatus);
+});
+
+function dropdownToggle(event, element) {
   if (event.target.nodeName === 'I' || event.target.nodeName === 'SPAN') {
     event.target.parentElement.children[1].classList.toggle('fa-ellipsis');
     event.target.parentElement.children[1].classList.toggle('fa-caret-down');
-    $sidebarStatus.classList.toggle('hidden');
+    element.classList.toggle('hidden');
   }
-});
+}
 
 function genreObjectToCheckbox(object, $parent) {
   for (const genre in object) {
