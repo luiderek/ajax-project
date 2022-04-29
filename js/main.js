@@ -10,6 +10,7 @@ const $sidebarGenres = document.querySelector('.sidebar-genres');
 const $sidebarThemes = document.querySelector('.sidebar-themes');
 const $sidebarDemos = document.querySelector('.sidebar-demos');
 const $sidebarStatus = document.querySelector('.sidebar-status');
+const $sidebarInput = document.querySelector('.sidebar-input');
 const $detailContainer = document.querySelector('.detail-container');
 const $detailModal = document.querySelector('.detail-modal');
 const $myList = document.querySelector('.my-list');
@@ -134,6 +135,10 @@ $sidebarStatus.addEventListener('click', function (event) {
   if (event.target.className.includes('fa-solid')) {
     cycleStatusCheckbox(event.target);
   }
+});
+
+$sidebarInput.addEventListener('submit', function (event) {
+  event.preventDefault();
 });
 
 function sidebarVisibilityToggle() {
