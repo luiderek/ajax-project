@@ -295,6 +295,14 @@ function getJSOMFromAPI(q) {
       $cardContainer.appendChild($nothingFound);
     }
   });
+  xhr.addEventListener('error', function () {
+    $loadspin.classList.add('hidden');
+    const $errorMessage = document.createElement('p');
+    $errorMessage.setAttribute('style', 'white-space: pre;');
+    $errorMessage.textContent = 'There has been an network error.';
+    $errorMessage.className = 'no-find';
+    $cardContainer.appendChild($errorMessage);
+  });
   xhr.send();
 }
 
