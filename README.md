@@ -2,13 +2,15 @@
 
 A HTML, CSS, and JavaScript web application for people that want to create and share lists of manga.
 
-This is a webpage that acts as a client-UI for API queries (using [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)) to the [Jikan API](https://jikan.moe/), that displays summary info in a responsive card layout. Users can save a list of titles, which is stored in a JavaScript Object in localstorage, and view them seperately from search. Users are also able to export and load lists in a UTF16 compressed format. Pretty similar to how you'd keep track of save data for flash games.
+This is a webpage that acts as a client-UI for API queries that displays summary info in a responsive card layout. Users can save a list of titles, which is stored in a JavaScript Object in localstorage, and view them seperately from search. Users are also able to export and load lists in a UTF16 compressed format. Pretty similar to how you'd keep track of save data for flash games.
 
 ## Technologies Used
 
 - JavaScript
 - HTML5
 - CSS3
+- [Jikan API](https://jikan.moe/)
+- [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
 
 ## Features
 
