@@ -21,7 +21,7 @@ This is a webpage that acts as a client-UI for API queries that displays summary
 
 ## Getting Started
 
-It's just a single page website, open up index.html in any modern browser and it oughta work fine.
+It's just a single page website, open up `index.html` in any modern browser and it oughta work fine.
 
 ## Preview
 ![image](https://user-images.githubusercontent.com/12964172/173963721-cbd71040-4133-4b15-9c0f-df87dee0ae3f.png)
