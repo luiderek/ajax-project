@@ -10,7 +10,7 @@ This is a webpage that acts as a client-UI for API queries that displays summary
 - HTML5
 - CSS3
 - [Jikan API](https://jikan.moe/)
-- [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
+- XMLHttpRequest
 
 ## Features
 
