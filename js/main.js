@@ -32,6 +32,7 @@ window.addEventListener('DOMContentLoaded', function (event) {
     data.saved = [];
   }
   $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
+  updateInfoMessage('Welcome to YALM.\r\n\r\nTouch the hamburger menu in the top-right to get started with searching for and creating a manga list.');
 });
 
 $cardContainer.addEventListener('click', function (event) {
@@ -288,22 +289,22 @@ function getJSOMFromAPI(q) {
       }
       renderEntries();
     } else {
-      const $nothingFound = document.createElement('p');
-      $nothingFound.setAttribute('style', 'white-space: pre;');
-      $nothingFound.textContent = 'Nothing found with endpoint: \r\n' + getParams(q);
-      $nothingFound.className = 'no-find';
-      $cardContainer.appendChild($nothingFound);
+      updateInfoMessage('Nothing found with endpoint: \r\n' + getParams(q));
     }
   });
   xhr.addEventListener('error', function () {
     $loadspin.classList.add('hidden');
-    const $errorMessage = document.createElement('p');
-    $errorMessage.setAttribute('style', 'white-space: pre;');
-    $errorMessage.textContent = 'There has been an network error.';
-    $errorMessage.className = 'no-find';
-    $cardContainer.appendChild($errorMessage);
+    updateInfoMessage('There has been an network error.');
   });
   xhr.send();
+}
+
+function updateInfoMessage(content) {
+  const $infoMessage = document.createElement('p');
+  $infoMessage.setAttribute('style', 'white-space: pre-wrap;');
+  $infoMessage.textContent = content;
+  $infoMessage.className = 'no-find';
+  $cardContainer.appendChild($infoMessage);
 }
 
 function getParams(q) {
