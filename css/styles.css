@@ -143,6 +143,8 @@ h4 {
   color: white;
   position: fixed;
   top: 20%;
+  text-align: center;
+  max-width: 90%;
 }
 
 .detail-container {

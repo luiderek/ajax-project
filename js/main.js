@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', function (event) {
     data.saved = [];
   }
   $myList.textContent = 'View My List ' + '(' + data.saved.length + ')';
-  updateInfoMessage('Welcome to YALM. Touch the hamburger menu in the top-right to get started with searching for and creating a manga list.');
+  updateInfoMessage('Welcome to YALM.\r\n\r\nTouch the hamburger menu in the top-right to get started with searching for and creating a manga list.');
 });
 
 $cardContainer.addEventListener('click', function (event) {
@@ -301,7 +301,7 @@ function getJSOMFromAPI(q) {
 
 function updateInfoMessage(content) {
   const $infoMessage = document.createElement('p');
-  $infoMessage.setAttribute('style', 'white-space: pre;');
+  $infoMessage.setAttribute('style', 'white-space: pre-wrap;');
   $infoMessage.textContent = content;
   $infoMessage.className = 'no-find';
   $cardContainer.appendChild($infoMessage);
