@@ -1,8 +1,8 @@
 # Yet Another List Maker • [Live Demo](https://luiderek.github.io/yet-another-list-maker/)
 
-A HTML, CSS, and JavaScript web application for people that want to create and share lists of manga.
+A HTML, CSS, and JavaScript web application for people that want to create and share a list of manga titles.
 
-This is a webpage that acts as a client-UI for API queries that displays summary info in a responsive card layout. Users can save a list of titles, which is stored in a JavaScript Object in localstorage, and view them seperately from search. Users are also able to export and load lists in a UTF16 compressed format. Pretty similar to how you'd keep track of save data for flash games.
+This is a webpage that acts as a client-UI for API queries that displays summary info in a responsive card layout. Users can save a list of titles, which is stored in a JavaScript Object in localstorage, and view them seperately from search. Users are also able to export and load lists in a UTF16 compressed format. Pretty similar to how you'd keep track of save data for older flash games.
 
 ## Technologies Used
 
