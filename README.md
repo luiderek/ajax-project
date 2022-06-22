@@ -1,4 +1,4 @@
-# Yet Another List Maker • [Live Demo](https://luiderek.github.io/ajax-project/)
+# Yet Another List Maker • [Live Demo](https://luiderek.github.io/yet-another-list-maker/)
 
 A HTML, CSS, and JavaScript web application for people that want to create and share lists of manga.
 
